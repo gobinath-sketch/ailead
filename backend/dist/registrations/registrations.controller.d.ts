@@ -1,0 +1,18 @@
+import { CreateRegistrationDto } from './dto/create-registration.dto';
+import { RegistrationsService } from './registrations.service';
+export declare class RegistrationsController {
+    private readonly registrationsService;
+    constructor(registrationsService: RegistrationsService);
+    create(dto: CreateRegistrationDto): Promise<{
+        email: string;
+        fullName: string;
+        phone: string;
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        paymentId: string;
+        organization: string | null;
+        role: string | null;
+        goals: string | null;
+    }>;
+}

@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+model Payment {
+  id                String         @id @default(cuid())
+  amount            Int
+  currency          String
+  status            PaymentStatus  @default(PENDING)
+  fullName          String
+  email             String
+  phone             String
+  razorpayOrderId   String         @unique
+  razorpayPaymentId String?
+  razorpaySignature String?
+  paidAt            DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  registration      Registration?
+
+  @@index([email])
+  @@index([phone])
+}
+
+model Registration {
+  id           String   @id @default(cuid())
+  paymentId    String   @unique
+  fullName     String
+  email        String
+  phone        String
+  organization String?
+  role         String?
+  goals        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  payment      Payment  @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+
+  @@index([email])
+  @@index([phone])
+}
