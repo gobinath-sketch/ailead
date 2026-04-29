@@ -24,16 +24,16 @@ export declare class PaymentsService {
         paymentId: string;
     }>;
     getPayment(paymentId: string): Promise<{
-        amount: number;
-        currency: string;
-        email: string;
         fullName: string;
+        email: string;
         phone: string;
-        id: string;
-        status: import("@prisma/client").$Enums.PaymentStatus;
         razorpayOrderId: string;
         razorpayPaymentId: string | null;
         razorpaySignature: string | null;
+        amount: number;
+        currency: string;
+        id: string;
+        status: import("@prisma/client").$Enums.PaymentStatus;
         paidAt: Date | null;
         createdAt: Date;
         updatedAt: Date;

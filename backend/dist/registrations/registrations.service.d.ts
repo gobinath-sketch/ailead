@@ -4,8 +4,8 @@ export declare class RegistrationsService {
     private readonly prisma;
     constructor(prisma: PrismaService);
     create(dto: CreateRegistrationDto): Promise<{
-        email: string;
         fullName: string;
+        email: string;
         phone: string;
         id: string;
         createdAt: Date;

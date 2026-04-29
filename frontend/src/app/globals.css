@@ -1,56 +1,112 @@
 @import "tailwindcss";
 
-:root {
-  --bg: #f5f5f5;
-  --surface: #ffffff;
-  --text: #111111;
-  --muted: #5e5e5e;
-  --line: #d4d4d4;
-  --accent: #1f1f1f;
+@theme {
+  --color-outskill-lime: #B8EF43;
+  --color-outskill-lime-hover: #D0F56A;
+  --color-surface: rgba(22, 22, 22, 0.4);
+  --color-surface-hover: rgba(40, 40, 40, 0.6);
+  --color-glass-border: rgba(255, 255, 255, 0.1);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-html[data-theme="dark"] {
-  --bg: #0f0f0f;
-  --surface: #161616;
-  --text: #f5f5f5;
-  --muted: #bbbbbb;
-  --line: #2e2e2e;
-  --accent: #ededed;
-}
-
-* {
-  border-radius: 0 !important;
+:root, html[data-theme="dark"] {
+  --bg: #000000;
+  --text: #ffffff;
+  --muted: #a1a1aa;
 }
 
 body {
-  background: var(--bg);
+  background-color: var(--bg);
   color: var(--text);
-  font-family: var(--font-geist-sans), Arial, sans-serif;
+  font-family: var(--font-sans);
+  /* Background images are now handled dynamically per-page in SiteFrame */
+}
+
+/* Animations for Infinite Marquee */
+@keyframes scrolling {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: scrolling 80s linear infinite;
+}
+
+.marquee-gradient-mask {
+  mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
 }
 
 .shell {
   min-height: 100dvh;
   display: grid;
   grid-template-rows: auto 1fr;
-  background-image:
-    radial-gradient(circle at 8% 12%, color-mix(in srgb, var(--line), transparent 85%) 0, transparent 260px),
-    radial-gradient(circle at 92% 85%, color-mix(in srgb, var(--line), transparent 82%) 0, transparent 220px);
 }
 
-.card {
-  border: 1px solid var(--line);
-  background: var(--surface);
+.glass-panel {
+  background: var(--color-surface);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-glass-border);
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+
+.glass-panel-hover:hover {
+  background: var(--color-surface-hover);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
+}
+
+.nav-pill {
+  background: rgba(10, 10, 10, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+}
+
+.nav-link {
+  color: #e4e4e7;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+.nav-link:hover {
+  color: var(--color-outskill-lime);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .cta {
-  border: 1px solid var(--text);
-  background: var(--text);
-  color: var(--bg);
-  padding: 0.7rem 1rem;
+  background: var(--color-outskill-lime);
+  color: #000000;
+  padding: 0.75rem 1.5rem;
   font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 20px -5px var(--color-outskill-lime);
 }
 
-.cta:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.cta:hover {
+  background: var(--color-outskill-lime-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px -5px var(--color-outskill-lime-hover);
+}
+
+.cta-secondary {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.2);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+
+.cta-secondary:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: #ffffff;
 }

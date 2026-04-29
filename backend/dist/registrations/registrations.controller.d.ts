@@ -4,8 +4,8 @@ export declare class RegistrationsController {
     private readonly registrationsService;
     constructor(registrationsService: RegistrationsService);
     create(dto: CreateRegistrationDto): Promise<{
-        email: string;
         fullName: string;
+        email: string;
         phone: string;
         id: string;
         createdAt: Date;
