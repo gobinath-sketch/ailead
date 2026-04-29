@@ -26,8 +26,21 @@ export default function RegisterPage() {
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
 
+  const isEmailValid = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+  const isPhoneValid = (value: string) => /^[0-9]{10}$/.test(value);
+  const isFullNameValid = (value: string) => value.trim().length > 0 && value.trim().length <= 120;
+
+  const isReadyForPayment =
+    isFullNameValid(form.fullName) && isEmailValid(form.email) && isPhoneValid(form.phone);
+
   const onPay = async () => {
     try {
+      if (!isReadyForPayment) {
+        setMessage(
+          "Please enter valid details: full name, a correct email, and a 10-digit phone number (numbers only)."
+        );
+        return;
+      }
       setBusy(true);
       setMessage("");
       // Add visual delay effect for secure connection
@@ -42,7 +55,19 @@ export default function RegisterPage() {
           phone: form.phone,
         }),
       });
-      if (!orderResponse.ok) throw new Error("Could not initialize secure payment channel.");
+      if (!orderResponse.ok) {
+        let backendMessage = "Could not initialize secure payment channel.";
+        try {
+          const err = await orderResponse.json();
+          backendMessage =
+            err?.message?.toString?.() ??
+            err?.error?.toString?.() ??
+            backendMessage;
+        } catch {
+          // keep default message
+        }
+        throw new Error(backendMessage);
+      }
       const order = await orderResponse.json();
 
       const razorpay = new window.Razorpay({
@@ -157,7 +182,12 @@ export default function RegisterPage() {
             
             <div className="col-span-2 pt-6 border-t border-white/10 mt-2">
               <div className="flex flex-col sm:flex-row items-center gap-4">
-                <button type="button" className={`cta flex-1 w-full text-center py-3 text-sm ${paid ? "opacity-50" : ""}`} onClick={onPay} disabled={busy || paid}>
+                <button
+                  type="button"
+                  className={`cta flex-1 w-full text-center py-3 text-sm ${paid ? "opacity-50" : ""}`}
+                  onClick={onPay}
+                  disabled={busy || paid || !isReadyForPayment}
+                >
                   {paid ? "Payment Authorized" : "Authorize Payment Securely"}
                 </button>
                 <button type="submit" className={`flex-1 w-full text-center px-6 py-3 text-sm font-bold rounded-none transition-all ${paid && !busy ? "bg-white text-black hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.3)]" : "bg-transparent border border-white/20 text-gray-500 cursor-not-allowed"}`} disabled={!paid || busy}>

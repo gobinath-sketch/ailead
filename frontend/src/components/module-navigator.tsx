@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const moduleOrder = ["generative-ai", "agentic-ai", "vibe-coding", "visual-storytelling"];
@@ -16,11 +16,14 @@ export function ModuleNavigator({ currentSlug }: ModuleNavigatorProps) {
   const prevModule = currentIndex > 0 ? moduleOrder[currentIndex - 1] : null;
   const nextModule = currentIndex < moduleOrder.length - 1 ? moduleOrder[currentIndex + 1] : null;
 
-  const navigateTo = (slug: string | null) => {
-    if (slug) {
-      router.push(`/modules/${slug}`);
-    }
-  };
+  const navigateTo = useCallback(
+    (slug: string | null) => {
+      if (slug) {
+        router.push(`/modules/${slug}`);
+      }
+    },
+    [router]
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -33,7 +36,7 @@ export function ModuleNavigator({ currentSlug }: ModuleNavigatorProps) {
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [prevModule, nextModule]);
+  }, [prevModule, nextModule, navigateTo]);
 
   return (
     <div className="fixed inset-y-0 left-0 right-0 pointer-events-none z-40 flex items-center justify-between px-4">
