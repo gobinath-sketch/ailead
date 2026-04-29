@@ -8,7 +8,7 @@ export default function CertificatePage() {
         <div className="grid grid-cols-1 md:grid-cols-[1fr_400px] gap-12 items-center">
           
           <div className="flex flex-col gap-6">
-            <p className="inline-block w-fit px-3 py-1 rounded-full border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-xs font-bold tracking-widest uppercase">
+            <p className="inline-block w-fit px-3 py-1 rounded-none border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-xs font-bold tracking-widest uppercase">
               Verifiable Execution
             </p>
             <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-xl leading-tight">
@@ -20,7 +20,7 @@ export default function CertificatePage() {
             
             <div className="mt-6 space-y-4">
               <div className="flex gap-4 items-start">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-1 border border-white/20">
+                <div className="w-8 h-8 rounded-none bg-white/10 flex items-center justify-center shrink-0 mt-1 border border-white/20">
                   <span className="text-outskill-lime font-bold">1</span>
                 </div>
                 <div>
@@ -30,7 +30,7 @@ export default function CertificatePage() {
               </div>
               
               <div className="flex gap-4 items-start">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-1 border border-white/20">
+                <div className="w-8 h-8 rounded-none bg-white/10 flex items-center justify-center shrink-0 mt-1 border border-white/20">
                   <span className="text-outskill-lime font-bold">2</span>
                 </div>
                 <div>
@@ -40,7 +40,7 @@ export default function CertificatePage() {
               </div>
               
               <div className="flex gap-4 items-start">
-                <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-1 border border-white/20">
+                <div className="w-8 h-8 rounded-none bg-white/10 flex items-center justify-center shrink-0 mt-1 border border-white/20">
                   <span className="text-outskill-lime font-bold">3</span>
                 </div>
                 <div>
@@ -53,13 +53,13 @@ export default function CertificatePage() {
           
           <div className="relative">
             {/* Certificate Display Mockup */}
-            <div className="absolute inset-0 bg-outskill-lime/20 blur-[60px] rounded-full"></div>
+            <div className="absolute inset-0 bg-outskill-lime/20 blur-[60px] rounded-none"></div>
             <article className="glass-panel p-2 relative shadow-2xl border-white/20 rotate-2 hover:rotate-0 transition-transform duration-500">
-              <div className="border border-white/10 bg-black/80 rounded-xl p-8 text-center h-[500px] flex flex-col justify-between" style={{ backgroundImage: "radial-gradient(circle at center, rgba(30,30,30,1) 0%, rgba(0,0,0,1) 100%)" }}>
+              <div className="border border-white/10 bg-black/80 rounded-none p-8 text-center h-[500px] flex flex-col justify-between" style={{ backgroundImage: "radial-gradient(circle at center, rgba(30,30,30,1) 0%, rgba(0,0,0,1) 100%)" }}>
                  <div className="opacity-80">
                    <p className="text-[10px] tracking-[0.3em] uppercase text-gray-500 mb-2">Proof of Competence</p>
-                   <span className="inline-block w-8 h-8 rounded-full border border-outskill-lime/50 flex items-center justify-center shadow-[0_0_10px_#B8EF43]">
-                     <span className="w-3 h-3 bg-outskill-lime rounded-full"></span>
+                   <span className="inline-block w-8 h-8 rounded-none border border-outskill-lime/50 flex items-center justify-center shadow-[0_0_10px_#B8EF43]">
+                     <span className="w-3 h-3 bg-outskill-lime rounded-none"></span>
                    </span>
                  </div>
                  

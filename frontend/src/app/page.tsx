@@ -9,10 +9,10 @@ export default function Home() {
         
         {/* Cinematic Hero Section */}
         <section className="text-center max-w-4xl mx-auto flex flex-col items-center gap-4 relative">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-outskill-lime/20 blur-[100px] rounded-full pointer-events-none"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-outskill-lime/20 blur-[100px] rounded-none pointer-events-none"></div>
           
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-2">
-            <span className="w-2 h-2 rounded-full bg-outskill-lime shadow-[0_0_8px_#B8EF43] animate-pulse"></span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-none border border-white/10 bg-white/5 backdrop-blur-md mb-2">
+            <span className="w-2 h-2 rounded-none bg-outskill-lime shadow-[0_0_8px_#B8EF43] animate-pulse"></span>
             <span className="text-xs font-medium tracking-widest uppercase text-gray-200">Ultimate AI Mastery Syllabus</span>
           </div>
           
@@ -53,7 +53,7 @@ export default function Home() {
         {/* Feature Cards - Glassmorphism */}
         <section className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
           <article className="glass-panel glass-panel-hover p-6 relative overflow-hidden group">
-            <div className="absolute -right-8 -top-8 w-32 h-32 bg-outskill-lime/10 blur-[40px] rounded-full group-hover:bg-outskill-lime/20 transition-all duration-500"></div>
+            <div className="absolute -right-8 -top-8 w-32 h-32 bg-outskill-lime/10 blur-[40px] rounded-none group-hover:bg-outskill-lime/20 transition-all duration-500"></div>
             
             <h3 className="text-xl font-bold text-white mb-2">Foundational Adoption</h3>
             <p className="text-gray-300 leading-relaxed font-light text-sm">
@@ -62,7 +62,7 @@ export default function Home() {
           </article>
           
           <article className="glass-panel glass-panel-hover p-6 relative overflow-hidden group">
-            <div className="absolute -right-8 -top-8 w-32 h-32 bg-outskill-lime/10 blur-[40px] rounded-full group-hover:bg-outskill-lime/20 transition-all duration-500"></div>
+            <div className="absolute -right-8 -top-8 w-32 h-32 bg-outskill-lime/10 blur-[40px] rounded-none group-hover:bg-outskill-lime/20 transition-all duration-500"></div>
             
             <h3 className="text-xl font-bold text-white mb-2">Agentic Implementation</h3>
             <p className="text-gray-300 leading-relaxed font-light text-sm">
@@ -71,7 +71,7 @@ export default function Home() {
           </article>
           
           <article className="glass-panel glass-panel-hover p-6 relative overflow-hidden group">
-            <div className="absolute -right-8 -top-8 w-32 h-32 bg-outskill-lime/10 blur-[40px] rounded-full group-hover:bg-outskill-lime/20 transition-all duration-500"></div>
+            <div className="absolute -right-8 -top-8 w-32 h-32 bg-outskill-lime/10 blur-[40px] rounded-none group-hover:bg-outskill-lime/20 transition-all duration-500"></div>
             
             <h3 className="text-xl font-bold text-white mb-2">Career Transformation</h3>
             <p className="text-gray-300 leading-relaxed font-light text-sm">

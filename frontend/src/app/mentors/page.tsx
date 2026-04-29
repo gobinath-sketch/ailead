@@ -36,7 +36,7 @@ export default function MentorsPage() {
     <SiteFrame title="Your Mentors">
       <div className="w-full py-12 md:py-16">
         <div className="text-center mb-16">
-          <p className="inline-block px-3 py-1 rounded-full border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-xs font-bold tracking-widest uppercase mb-4">
+          <p className="inline-block px-3 py-1 rounded-none border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-xs font-bold tracking-widest uppercase mb-4">
             Instructors
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-xl mb-4">
@@ -50,7 +50,7 @@ export default function MentorsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {mentors.map((mentor) => (
             <article key={mentor.name} className="glass-panel p-8 relative overflow-hidden group hover:border-white/20 transition-all duration-300">
-               <div className="absolute top-0 right-0 w-24 h-24 bg-outskill-lime/5 rounded-full blur-[30px] group-hover:bg-outskill-lime/15 transition-all"></div>
+               <div className="absolute top-0 right-0 w-24 h-24 bg-outskill-lime/5 rounded-none blur-[30px] group-hover:bg-outskill-lime/15 transition-all"></div>
                
                <header className="mb-6 border-b border-white/10 pb-6 relative z-10">
                  <h3 className="text-3xl font-bold text-white mb-1">{mentor.name}</h3>
@@ -67,7 +67,7 @@ export default function MentorsPage() {
                  <ul className="space-y-2">
                    {mentor.achievements.map((acc) => (
                      <li key={acc} className="flex items-center gap-3 text-sm text-gray-200">
-                       <span className="w-1.5 h-1.5 rounded-full bg-outskill-lime shadow-[0_0_5px_#B8EF43]"></span>
+                       <span className="w-1.5 h-1.5 rounded-none bg-outskill-lime shadow-[0_0_5px_#B8EF43]"></span>
                        {acc}
                      </li>
                    ))}

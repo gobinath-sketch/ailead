@@ -6,7 +6,7 @@ export default function SchedulePage() {
     <SiteFrame title="Event Schedule">
       <div className="pt-20 pb-24 w-full">
         <div className="text-center mb-16">
-          <p className="inline-block px-3 py-1 rounded-full border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-xs font-bold tracking-widest uppercase mb-4">
+          <p className="inline-block px-3 py-1 rounded-none border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-xs font-bold tracking-widest uppercase mb-4">
             Timeline
           </p>
           <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-xl mb-4">

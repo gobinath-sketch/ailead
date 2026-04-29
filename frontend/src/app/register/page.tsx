@@ -110,7 +110,7 @@ export default function RegisterPage() {
       <div className="w-full py-6">
         
         <div className="text-center mb-6">
-          <p className="inline-block px-3 py-0.5 rounded-full border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-[10px] font-bold tracking-widest uppercase mb-2">
+          <p className="inline-block px-3 py-0.5 rounded-none border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-[10px] font-bold tracking-widest uppercase mb-2">
             Official Enrollment
           </p>
           <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-xl">
@@ -135,7 +135,7 @@ export default function RegisterPage() {
               <label key={key} className={`grid gap-1.5 text-sm text-gray-300 ${key === "fullName" || key === "organization" ? "col-span-2" : "col-span-2 md:col-span-1"}`}>
                 <span className="font-semibold uppercase tracking-wider text-[9px] text-gray-400">{label}</span>
                 <input
-                  className="bg-black/40 border border-white/10 rounded-md px-4 py-2.5 text-white focus:outline-none focus:border-outskill-lime/50 focus:ring-1 focus:ring-outskill-lime/50 transition-all placeholder:text-gray-600 text-sm"
+                  className="bg-black/40 border border-white/10 rounded-none px-4 py-2.5 text-white focus:outline-none focus:border-outskill-lime/50 focus:ring-1 focus:ring-outskill-lime/50 transition-all placeholder:text-gray-600 text-sm"
                   value={form[key as keyof typeof form]}
                   onChange={(e) => setForm((prev) => ({ ...prev, [key]: e.target.value }))}
                   required={key === "fullName" || key === "email" || key === "phone"}
@@ -148,7 +148,7 @@ export default function RegisterPage() {
             <label className="grid gap-1.5 text-sm text-gray-300 col-span-2 mt-1">
               <span className="font-semibold uppercase tracking-wider text-[9px] text-gray-400">Primary Learning Goals</span>
               <textarea 
-                className="bg-black/40 border border-white/10 rounded-md px-4 py-2.5 text-white focus:outline-none focus:border-outskill-lime/50 focus:ring-1 focus:ring-outskill-lime/50 transition-all min-h-[90px] resize-none text-sm" 
+                className="bg-black/40 border border-white/10 rounded-none px-4 py-2.5 text-white focus:outline-none focus:border-outskill-lime/50 focus:ring-1 focus:ring-outskill-lime/50 transition-all min-h-[90px] resize-none text-sm" 
                 value={form.goals} 
                 onChange={(e) => setForm((prev) => ({ ...prev, goals: e.target.value }))} 
                 placeholder="What are the specific workflows or problems you are trying to solve?"
@@ -160,13 +160,13 @@ export default function RegisterPage() {
                 <button type="button" className={`cta flex-1 w-full text-center py-3 text-sm ${paid ? "opacity-50" : ""}`} onClick={onPay} disabled={busy || paid}>
                   {paid ? "Payment Authorized" : "Authorize Payment Securely"}
                 </button>
-                <button type="submit" className={`flex-1 w-full text-center px-6 py-3 text-sm font-bold rounded-full transition-all ${paid && !busy ? "bg-white text-black hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.3)]" : "bg-transparent border border-white/20 text-gray-500 cursor-not-allowed"}`} disabled={!paid || busy}>
+                <button type="submit" className={`flex-1 w-full text-center px-6 py-3 text-sm font-bold rounded-none transition-all ${paid && !busy ? "bg-white text-black hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.3)]" : "bg-transparent border border-white/20 text-gray-500 cursor-not-allowed"}`} disabled={!paid || busy}>
                   Complete Enrollment
                 </button>
               </div>
               
               {message && (
-                <div className={`mt-4 p-3 rounded text-xs ${paid ? "bg-outskill-lime/10 text-outskill-lime border border-outskill-lime/20" : "bg-white/5 text-gray-300 border border-white/10"}`}>
+                <div className={`mt-4 p-3 rounded-none text-xs ${paid ? "bg-outskill-lime/10 text-outskill-lime border border-outskill-lime/20" : "bg-white/5 text-gray-300 border border-white/10"}`}>
                   {message}
                 </div>
               )}
@@ -176,7 +176,7 @@ export default function RegisterPage() {
           <div className="flex flex-col gap-4">
             <div className="glass-panel p-5 border-outskill-lime/20 shadow-[0_0_30px_rgba(184,239,67,0.05)]">
                <h3 className="text-base font-bold text-white mb-3 flex items-center gap-2">
-                 <span className="w-2 h-2 rounded-full bg-outskill-lime"></span>
+                 <span className="w-2 h-2 rounded-none bg-outskill-lime"></span>
                  Cohort Guarantee
                </h3>
                <p className="text-gray-400 text-xs leading-relaxed font-light mb-3">

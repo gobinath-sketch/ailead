@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 
 const allLogos = [
   { name: "Amazon", logoKey: "amazon" },
@@ -31,13 +32,13 @@ export function Marquee() {
             className="group flex-shrink-0 transition-all duration-500 hover:scale-110 cursor-default flex items-center justify-center"
           >
             <div className="relative h-10 flex items-center justify-center gap-4">
-              <img 
-                src={`/logos/${logo.logoKey}.png`} 
+              <Image
+                src={`/logos/${logo.logoKey}.png`}
                 alt={logo.name}
-                className="h-full object-contain rounded-md transition-all duration-500 shadow-sm"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
+                width={60}
+                height={60}
+                unoptimized
+                className="h-full w-auto object-contain rounded-none transition-all duration-500 shadow-sm"
               />
               <span className="text-neutral-200 font-bold text-xl tracking-widest uppercase group-hover:text-white transition-colors duration-500">
                  {logo.name}

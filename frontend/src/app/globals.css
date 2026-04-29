@@ -48,7 +48,7 @@ body {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-glass-border);
-  border-radius: 1rem;
+  border-radius: 0;
   transition: all 0.3s ease;
 }
 
@@ -59,12 +59,88 @@ body {
   box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5);
 }
 
+/* Premium patterned module cards */
+.module-card {
+  --module-bg: rgba(18, 18, 18, 0.85);
+  --module-border: rgba(255, 255, 255, 0.08);
+  position: relative;
+  border: 1px solid var(--module-border);
+  border-radius: 0;
+  background: var(--module-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.7);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.module-card::before, .module-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  background: rgba(30, 30, 30, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: -1;
+  transition: all 0.4s ease;
+}
+
+.module-card::before {
+  transform: translateY(-8px) scale(0.96);
+  opacity: 0.6;
+}
+
+.module-card::after {
+  transform: translateY(-16px) scale(0.92);
+  opacity: 0.3;
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(184, 239, 67, 0.4);
+}
+
+.module-card:hover::before {
+  transform: translateY(-12px) scale(0.97);
+}
+
+.module-card:hover::after {
+  transform: translateY(-22px) scale(0.94);
+}
+
+.module-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  border-color: rgba(184, 239, 67, 0.5);
+  box-shadow: 0 26px 56px -22px rgba(0, 0, 0, 0.72);
+}
+
+.module-card-title {
+  position: relative;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  padding-bottom: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.module-skill-chip {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+  color: #e5e7eb;
+  font-size: 0.72rem;
+  padding: 0.3rem 0.55rem;
+  transition: border-color 0.3s ease, transform 0.3s ease;
+  border-radius: 0;
+}
+
+.module-card:hover .module-skill-chip {
+  border-color: rgba(184, 239, 67, 0.42);
+  transform: translateY(-1px);
+}
+
 .nav-pill {
   background: rgba(10, 10, 10, 0.65);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 9999px;
+  border-radius: 0;
   padding: 0.5rem 1rem;
 }
 
@@ -72,7 +148,7 @@ body {
   color: #e4e4e7;
   transition: all 0.3s ease;
   font-weight: 500;
-  border-radius: 9999px;
+  border-radius: 0;
 }
 
 .nav-link:hover {
@@ -85,7 +161,7 @@ body {
   color: #000000;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
-  border-radius: 9999px;
+  border-radius: 0;
   transition: all 0.3s ease;
   box-shadow: 0 0 20px -5px var(--color-outskill-lime);
 }
@@ -102,7 +178,7 @@ body {
   border: 1px solid rgba(255,255,255,0.2);
   padding: 0.75rem 1.5rem;
   font-weight: 600;
-  border-radius: 9999px;
+  border-radius: 0;
   transition: all 0.3s ease;
 }
 
