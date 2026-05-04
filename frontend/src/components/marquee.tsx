@@ -23,24 +23,24 @@ const allLogos = [
 
 export function Marquee() {
   return (
-    <div className="w-full overflow-hidden marquee-gradient-mask py-4 mt-6 border-t border-white/5 bg-black/20 backdrop-blur-sm">
-      <div className="flex w-max animate-marquee space-x-20 items-center px-12">
+    <div className="w-full overflow-hidden marquee-gradient-mask py-2 mt-4 border-t border-white/5 bg-black/20 backdrop-blur-sm">
+      <div className="flex w-max animate-marquee space-x-16 items-center px-12">
         {/* Double array for seamless infinite scroll */}
         {[...allLogos, ...allLogos, ...allLogos].map((logo, idx) => (
           <div 
             key={idx} 
-            className="group flex-shrink-0 transition-all duration-500 hover:scale-110 cursor-default flex items-center justify-center"
+            className="group flex-shrink-0 transition-all duration-500 hover:scale-105 cursor-default flex items-center justify-center"
           >
-            <div className="relative h-10 flex items-center justify-center gap-4">
+            <div className="relative h-6 flex items-center justify-center gap-3">
               <Image
                 src={`/logos/${logo.logoKey}.png`}
                 alt={logo.name}
-                width={60}
-                height={60}
+                width={40}
+                height={40}
                 unoptimized
                 className="h-full w-auto object-contain rounded-none transition-all duration-500 shadow-sm"
               />
-              <span className="text-neutral-200 font-bold text-xl tracking-widest uppercase group-hover:text-white transition-colors duration-500">
+              <span className="text-neutral-300 font-bold text-sm tracking-widest uppercase group-hover:text-white transition-colors duration-500">
                  {logo.name}
               </span>
             </div>

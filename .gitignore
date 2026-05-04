@@ -1,0 +1,32 @@
+# Dependency directories
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build outputs
+dist/
+frontend/.next/
+backend/dist/
+
+# Large assets (Exceeding GitHub 100MB limit)
+*.mp4
+*.webm
+*.mov
+asset/videos/
+frontend/public/bg/*.mp4
+
+# Environment variables
+.env
+.env.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+**/desktop.ini

@@ -55,31 +55,12 @@ export default function CertificatePage() {
             {/* Certificate Display Mockup */}
             <div className="absolute inset-0 bg-outskill-lime/20 blur-[60px] rounded-none"></div>
             <article className="glass-panel p-2 relative shadow-2xl border-white/20 rotate-2 hover:rotate-0 transition-transform duration-500">
-              <div className="border border-white/10 bg-black/80 rounded-none p-8 text-center h-[500px] flex flex-col justify-between" style={{ backgroundImage: "radial-gradient(circle at center, rgba(30,30,30,1) 0%, rgba(0,0,0,1) 100%)" }}>
-                 <div className="opacity-80">
-                   <p className="text-[10px] tracking-[0.3em] uppercase text-gray-500 mb-2">Proof of Competence</p>
-                   <span className="inline-block w-8 h-8 rounded-none border border-outskill-lime/50 flex items-center justify-center shadow-[0_0_10px_#B8EF43]">
-                     <span className="w-3 h-3 bg-outskill-lime rounded-none"></span>
-                   </span>
-                 </div>
-                 
-                 <div>
-                   <h3 className="text-2xl font-serif text-white mb-2">Global Knowledge Technologies</h3>
-                   <p className="text-outskill-lime uppercase tracking-widest text-xs font-semibold mb-6">Certified Practitioner</p>
-                   
-                   <p className="text-[10px] text-gray-500 max-w-[200px] mx-auto uppercase">Has successfully demonstrated mastery in Prompt Architecture & Autonomous Agents.</p>
-                 </div>
-                 
-                 <div className="border-t border-white/10 pt-4 flex justify-between px-4">
-                   <div className="text-left">
-                     <p className="font-signature text-gray-400 text-sm">Instructor</p>
-                     <div className="h-px w-16 bg-white/20 mt-1"></div>
-                   </div>
-                   <div className="text-right">
-                     <p className="text-gray-400 text-[9px] uppercase tracking-wider">Date Issued</p>
-                     <p className="text-white text-xs font-mono mt-1">2026.04</p>
-                   </div>
-                 </div>
+              <div className="border border-white/10 bg-black/80 rounded-none p-1 flex items-center justify-center relative overflow-hidden group">
+                 <img 
+                   src="/certificate-mockup.png" 
+                   alt="Certificate Mockup" 
+                   className="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" 
+                 />
               </div>
             </article>
             

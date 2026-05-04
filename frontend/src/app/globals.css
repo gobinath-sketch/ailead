@@ -156,6 +156,30 @@ body {
   background: rgba(255, 255, 255, 0.05);
 }
 
+/* Shining animation for buttons */
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
+}
+
+.cta, .cta-secondary {
+  position: relative;
+  overflow: hidden;
+}
+
+.cta::after, .cta-secondary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shine 3s infinite ease-in-out;
+  transform: skewX(-25deg);
+  pointer-events: none;
+}
+
 .cta {
   background: var(--color-outskill-lime);
   color: #000000;
@@ -163,13 +187,13 @@ body {
   font-weight: 600;
   border-radius: 0;
   transition: all 0.3s ease;
-  box-shadow: 0 0 20px -5px var(--color-outskill-lime);
+  box-shadow: 0 4px 14px -2px rgba(184, 239, 67, 0.3);
 }
 
 .cta:hover {
   background: var(--color-outskill-lime-hover);
   transform: translateY(-2px);
-  box-shadow: 0 0 30px -5px var(--color-outskill-lime-hover);
+  box-shadow: 0 8px 25px -5px rgba(184, 239, 67, 0.5);
 }
 
 .cta-secondary {
