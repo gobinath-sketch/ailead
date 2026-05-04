@@ -64,7 +64,7 @@ export default function CertificatePage() {
                  </div>
                  
                  <div>
-                   <h3 className="text-2xl font-serif text-white mb-2">Lead with AI</h3>
+                   <h3 className="text-2xl font-serif text-white mb-2">Global Knowledge Technologies</h3>
                    <p className="text-outskill-lime uppercase tracking-widest text-xs font-semibold mb-6">Certified Practitioner</p>
                    
                    <p className="text-[10px] text-gray-500 max-w-[200px] mx-auto uppercase">Has successfully demonstrated mastery in Prompt Architecture & Autonomous Agents.</p>

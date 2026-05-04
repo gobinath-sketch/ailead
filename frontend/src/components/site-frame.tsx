@@ -28,7 +28,7 @@ interface SiteFrameProps {
 }
 
 export function SiteFrame({ title, children }: SiteFrameProps) {
-  const isNoScroll = title === "Lead with AI" || title === "Curriculum Breakdown" || title.includes("Roadmap") || title.includes("Module Explorer");
+  const isNoScroll = title === "Global Knowledge Technologies" || title === "Curriculum Breakdown" || title.includes("Roadmap") || title.includes("Module Explorer");
   
   return (
     <div className={`shell relative ${isNoScroll ? 'h-screen overflow-hidden' : ''}`}>

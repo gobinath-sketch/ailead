@@ -98,7 +98,7 @@ let PaymentsService = class PaymentsService {
             currency: 'INR',
             orderId: order.id,
             paymentId: payment.id,
-            description: 'Lead with AI - Event Registration',
+            description: 'Global Knowledge Technologies - Event Registration',
         };
     }
     async verifyPayment(dto) {

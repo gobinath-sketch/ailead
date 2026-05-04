@@ -4,7 +4,7 @@ import { Marquee } from "@/components/marquee";
 
 export default function Home() {
   return (
-    <SiteFrame title="Lead with AI">
+    <SiteFrame title="Global Knowledge Technologies">
       <div className="flex flex-col gap-8 pt-4 pb-4">
         
         {/* Cinematic Hero Section */}

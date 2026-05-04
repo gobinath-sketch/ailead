@@ -17,7 +17,7 @@ describe('API endpoints (e2e)', () => {
       currency: 'INR',
       orderId: 'order_mock',
       paymentId: 'pay_internal_mock',
-      description: 'Lead with AI - Event Registration',
+      description: 'Global Knowledge Technologies - Event Registration',
     }),
     verifyPayment: jest.fn().mockResolvedValue({ success: true, paymentId: 'pay_internal_mock' }),
     getPayment: jest.fn().mockResolvedValue({ id: 'pay_internal_mock', status: 'PAID' }),

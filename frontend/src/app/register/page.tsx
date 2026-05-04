@@ -4,13 +4,63 @@ import { SiteFrame } from "@/components/site-frame";
 import { FormEvent, useState } from "react";
 import Script from "next/script";
 
+type RazorpayInstance = { open: () => void };
+type RazorpayConstructor = new (options: Record<string, unknown>) => RazorpayInstance;
+
 declare global {
   interface Window {
-    Razorpay: new (options: Record<string, unknown>) => { open: () => void };
+    Razorpay?: RazorpayConstructor;
   }
 }
 
 const api = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+
+function formatHttpError(payload: unknown, fallback: string) {
+  if (!payload || typeof payload !== "object") return fallback;
+
+  const anyPayload = payload as Record<string, unknown>;
+
+  if (typeof anyPayload.message === "string" && anyPayload.message.trim()) {
+    return anyPayload.message;
+  }
+
+  if (Array.isArray(anyPayload.message)) {
+    const parts = anyPayload.message
+      .map((item) => {
+        if (!item || typeof item !== "object") return null;
+        const m = item as Record<string, unknown>;
+        const constraints = m.constraints;
+        if (constraints && typeof constraints === "object") {
+          const values = Object.values(constraints as Record<string, string>).filter(Boolean);
+          if (values.length) return values.join(", ");
+        }
+        if (typeof m.property === "string" && typeof m.message === "string") {
+          return `${m.property}: ${m.message}`;
+        }
+        return null;
+      })
+      .filter(Boolean) as string[];
+
+    if (parts.length) return parts.join(" | ");
+  }
+
+  if (typeof anyPayload.error === "string" && anyPayload.error.trim()) {
+    return anyPayload.error;
+  }
+
+  return fallback;
+}
+
+async function waitForRazorpay(timeoutMs = 12000) {
+  const started = Date.now();
+  while (Date.now() - started < timeoutMs) {
+    if (typeof window !== "undefined" && typeof window.Razorpay === "function") return;
+    await new Promise((r) => setTimeout(r, 50));
+  }
+  throw new Error(
+    "Razorpay checkout script did not load. Please refresh the page, disable extensions/ad-blockers for localhost, and try again."
+  );
+}
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -45,6 +95,8 @@ export default function RegisterPage() {
       setMessage("");
       // Add visual delay effect for secure connection
       await new Promise(r => setTimeout(r, 600)); 
+
+      await waitForRazorpay();
       
       const orderResponse = await fetch(`${api}/payments/create-order`, {
         method: "POST",
@@ -59,10 +111,7 @@ export default function RegisterPage() {
         let backendMessage = "Could not initialize secure payment channel.";
         try {
           const err = await orderResponse.json();
-          backendMessage =
-            err?.message?.toString?.() ??
-            err?.error?.toString?.() ??
-            backendMessage;
+          backendMessage = formatHttpError(err, backendMessage);
         } catch {
           // keep default message
         }
@@ -70,12 +119,17 @@ export default function RegisterPage() {
       }
       const order = await orderResponse.json();
 
-      const razorpay = new window.Razorpay({
+      const RazorpayCtor = window.Razorpay;
+      if (!RazorpayCtor) {
+        throw new Error("Razorpay is unavailable in this browser session.");
+      }
+
+      const razorpay = new RazorpayCtor({
         key: order.keyId,
         amount: order.amount,
         currency: order.currency,
         order_id: order.orderId,
-        name: "Lead with AI Program",
+        name: "Global Knowledge Technologies Program",
         description: "Official Enrollment Credential",
         theme: {
           color: "#B8EF43" 
@@ -131,7 +185,11 @@ export default function RegisterPage() {
 
   return (
     <SiteFrame title="Secure Registration">
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" />
+      <Script
+        id="rzp-checkout-js"
+        src="https://checkout.razorpay.com/v1/checkout.js"
+        strategy="afterInteractive"
+      />
       <div className="w-full py-6">
         
         <div className="text-center mb-6">

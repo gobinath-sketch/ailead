@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Lead with AI",
+  title: "Global Knowledge Technologies",
 };
 
 export default function RootLayout({
