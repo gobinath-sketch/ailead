@@ -46,7 +46,7 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
         <header className="nav-pill flex items-center justify-between gap-8 max-w-7xl xl:max-w-[1440px] w-full hover:bg-black/80 transition-all duration-500">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-              Upskill
+              Global Knowledge Technologies
             </h1>
           </div>
           <nav className="hidden md:flex items-center gap-0.5">
