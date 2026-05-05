@@ -19,6 +19,7 @@ const mainModules = [
 ];
 
 import { Chatbot } from "./chatbot";
+import { CommunityPanel } from "./community-panel";
 
 interface SiteFrameProps {
   title: string;
@@ -86,9 +87,9 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
 
           </nav>
           <div className="flex items-center gap-3">
-             <a href="https://razorpay.me/@manisekargobinath" target="_blank" rel="noopener noreferrer" className="cta text-sm py-2 px-5 hidden sm:block">
+             <Link href="/register" className="cta text-sm py-2 px-5 hidden sm:block">
                 Start Now
-             </a>
+             </Link>
           </div>
         </header>
       </div>
@@ -100,6 +101,8 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
 
       {/* Global Chatbot */}
       <Chatbot />
+      {/* Community Slide-In Panel */}
+      <CommunityPanel />
     </div>
   );
 }

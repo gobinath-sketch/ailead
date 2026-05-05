@@ -24,18 +24,28 @@ export declare class PaymentsService {
         paymentId: string;
     }>;
     getPayment(paymentId: string): Promise<{
-        amount: number;
-        currency: string;
-        email: string;
         fullName: string;
+        email: string;
         phone: string;
-        id: string;
-        status: import("@prisma/client").$Enums.PaymentStatus;
-        razorpayOrderId: string;
+        razorpayOrderId: string | null;
         razorpayPaymentId: string | null;
         razorpaySignature: string | null;
+        amount: number;
+        currency: string;
+        id: string;
+        status: import("@prisma/client").$Enums.PaymentStatus;
+        source: import("@prisma/client").$Enums.PaymentSource;
+        razorpayPaymentLinkId: string | null;
+        razorpayRefundId: string | null;
+        paymentMethod: string | null;
+        payerVpa: string | null;
+        payerAccountType: string | null;
+        bankRrn: string | null;
+        description: string | null;
         paidAt: Date | null;
+        refundedAt: Date | null;
         createdAt: Date;
         updatedAt: Date;
+        rawWebhookPayload: import("@prisma/client/runtime/library").JsonValue | null;
     } | null>;
 }

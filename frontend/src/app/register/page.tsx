@@ -1,65 +1,29 @@
 "use client";
 
 import { SiteFrame } from "@/components/site-frame";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import Script from "next/script";
+import Link from "next/link";
+import { motion, AnimatePresence } from "framer-motion";
 
 type RazorpayInstance = { open: () => void };
 type RazorpayConstructor = new (options: Record<string, unknown>) => RazorpayInstance;
 
 declare global {
-  interface Window {
+  interface window {
     Razorpay?: RazorpayConstructor;
   }
 }
 
 const api = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
 
-function formatHttpError(payload: unknown, fallback: string) {
-  if (!payload || typeof payload !== "object") return fallback;
-
-  const anyPayload = payload as Record<string, unknown>;
-
-  if (typeof anyPayload.message === "string" && anyPayload.message.trim()) {
-    return anyPayload.message;
-  }
-
-  if (Array.isArray(anyPayload.message)) {
-    const parts = anyPayload.message
-      .map((item) => {
-        if (!item || typeof item !== "object") return null;
-        const m = item as Record<string, unknown>;
-        const constraints = m.constraints;
-        if (constraints && typeof constraints === "object") {
-          const values = Object.values(constraints as Record<string, string>).filter(Boolean);
-          if (values.length) return values.join(", ");
-        }
-        if (typeof m.property === "string" && typeof m.message === "string") {
-          return `${m.property}: ${m.message}`;
-        }
-        return null;
-      })
-      .filter(Boolean) as string[];
-
-    if (parts.length) return parts.join(" | ");
-  }
-
-  if (typeof anyPayload.error === "string" && anyPayload.error.trim()) {
-    return anyPayload.error;
-  }
-
-  return fallback;
-}
-
 async function waitForRazorpay(timeoutMs = 12000) {
   const started = Date.now();
   while (Date.now() - started < timeoutMs) {
-    if (typeof window !== "undefined" && typeof window.Razorpay === "function") return;
+    if (typeof window !== "undefined" && typeof (window as any).Razorpay === "function") return;
     await new Promise((r) => setTimeout(r, 50));
   }
-  throw new Error(
-    "Razorpay checkout script did not load. Please refresh the page, disable extensions/ad-blockers for localhost, and try again."
-  );
+  throw new Error("Razorpay checkout script did not load.");
 }
 
 export default function RegisterPage() {
@@ -71,8 +35,9 @@ export default function RegisterPage() {
     role: "",
     goals: "",
   });
+  const [showSummary, setShowSummary] = useState(false);
   const [paymentId, setPaymentId] = useState("");
-  const [paid, setPaid] = useState(false);
+  const [enrolled, setEnrolled] = useState(false);
   const [message, setMessage] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -85,17 +50,8 @@ export default function RegisterPage() {
 
   const onPay = async () => {
     try {
-      if (!isReadyForPayment) {
-        setMessage(
-          "Please enter valid details: full name, a correct email, and a 10-digit phone number (numbers only)."
-        );
-        return;
-      }
       setBusy(true);
       setMessage("");
-      // Add visual delay effect for secure connection
-      await new Promise(r => setTimeout(r, 600)); 
-
       await waitForRazorpay();
       
       const orderResponse = await fetch(`${api}/payments/create-order`, {
@@ -107,197 +63,247 @@ export default function RegisterPage() {
           phone: form.phone,
         }),
       });
-      if (!orderResponse.ok) {
-        let backendMessage = "Could not initialize secure payment channel.";
-        try {
-          const err = await orderResponse.json();
-          backendMessage = formatHttpError(err, backendMessage);
-        } catch {
-          // keep default message
-        }
-        throw new Error(backendMessage);
-      }
+      
+      if (!orderResponse.ok) throw new Error("Could not initialize secure payment channel.");
       const order = await orderResponse.json();
 
-      const RazorpayCtor = window.Razorpay;
-      if (!RazorpayCtor) {
-        throw new Error("Razorpay is unavailable in this browser session.");
-      }
+      const RazorpayCtor = (window as any).Razorpay;
+      if (!RazorpayCtor) throw new Error("Razorpay is unavailable.");
 
       const razorpay = new RazorpayCtor({
         key: order.keyId,
         amount: order.amount,
         currency: order.currency,
         order_id: order.orderId,
-        name: "Global Knowledge Technologies Program",
+        name: "Global Knowledge Technologies",
         description: "Official Enrollment Credential",
-        theme: {
-          color: "#B8EF43" 
-        },
+        theme: { color: "#B8EF43" },
         prefill: { name: form.fullName, email: form.email, contact: form.phone },
         handler: async (response: Record<string, string>) => {
-          const verify = await fetch(`${api}/payments/verify`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              razorpayOrderId: response.razorpay_order_id,
-              razorpayPaymentId: response.razorpay_payment_id,
-              razorpaySignature: response.razorpay_signature,
-              ...form
-            }),
-          });
-          if (!verify.ok) throw new Error("Payment verification failed.");
-          const result = await verify.json();
-          setPaid(true);
-          setPaymentId(result.paymentId);
-          setMessage("Payment securely confirmed. You may now complete enrollment.");
+          try {
+            setBusy(true);
+            setMessage("Verifying payment...");
+            
+            const verify = await fetch(`${api}/payments/verify`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                razorpayOrderId: response.razorpay_order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+                ...form
+              }),
+            });
+            
+            if (!verify.ok) throw new Error("Verification failed.");
+            const verifyResult = await verify.json();
+            
+            setPaymentId(verifyResult.paymentId);
+            setMessage("Finalizing enrollment...");
+
+            const regResponse = await fetch(`${api}/registrations`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ ...form, paymentId: verifyResult.paymentId }),
+            });
+            
+            const regResult = await regResponse.json();
+            if (!regResponse.ok) throw new Error(regResult.message);
+            
+            setEnrolled(true);
+          } catch (err) {
+            setMessage(err instanceof Error ? err.message : "Error during finalization.");
+          } finally {
+            setBusy(false);
+          }
         },
       });
       razorpay.open();
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Payment connection failed.");
+      setMessage(error instanceof Error ? error.message : "Payment failed.");
     } finally {
       setBusy(false);
     }
   };
 
-  const onRegister = async (event: FormEvent) => {
-    event.preventDefault();
-    if (!paid || !paymentId) {
-      setMessage("Please complete the secure payment authorization first.");
-      return;
-    }
-    setBusy(true);
-    setMessage("");
-    const response = await fetch(`${api}/registrations`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, paymentId }),
-    });
-    const result = await response.json();
-    setBusy(false);
-    if (!response.ok) {
-      setMessage(result.message ?? "Registration initialization failed.");
-      return;
-    }
-    setMessage(`Access Granted. Welcome to the cohort. Reference ID: ${result.id}`);
-  };
-
   return (
     <SiteFrame title="Secure Registration">
-      <Script
-        id="rzp-checkout-js"
-        src="https://checkout.razorpay.com/v1/checkout.js"
-        strategy="afterInteractive"
-      />
-      <div className="w-full py-6">
+      <Script id="rzp-checkout-js" src="https://checkout.razorpay.com/v1/checkout.js" strategy="afterInteractive" />
+      
+      <div className="w-full py-12 flex flex-col items-center min-h-[600px] justify-center">
         
-        <div className="text-center mb-6">
-          <p className="inline-block px-3 py-0.5 rounded-none border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-[10px] font-bold tracking-widest uppercase mb-2">
-            Official Enrollment
-          </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight drop-shadow-xl">
-            Secure Your Access
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_380px] gap-6 items-start">
-          
-          <form onSubmit={onRegister} className="glass-panel p-6 pb-8 grid grid-cols-2 gap-4 relative shadow-2xl">
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-outskill-lime to-transparent"></div>
-            
-            <h3 className="col-span-2 text-lg font-bold text-white mb-2">Participant Details</h3>
-            
-            {[
-              ["fullName", "Legal Full Name"],
-              ["email", "Professional Email"],
-              ["phone", "Direct Phone / Mobile"],
-              ["organization", "Current Organization"],
-              ["role", "Professional Title"],
-            ].map(([key, label]) => (
-              <label key={key} className={`grid gap-1.5 text-sm text-gray-300 ${key === "fullName" || key === "organization" ? "col-span-2" : "col-span-2 md:col-span-1"}`}>
-                <span className="font-semibold uppercase tracking-wider text-[9px] text-gray-400">{label}</span>
-                <input
-                  className="bg-black/40 border border-white/10 rounded-none px-4 py-2.5 text-white focus:outline-none focus:border-outskill-lime/50 focus:ring-1 focus:ring-outskill-lime/50 transition-all placeholder:text-gray-600 text-sm"
-                  value={form[key as keyof typeof form]}
-                  onChange={(e) => setForm((prev) => ({ ...prev, [key]: e.target.value }))}
-                  required={key === "fullName" || key === "email" || key === "phone"}
-                  placeholder={`Enter ${label.toLowerCase()}`}
-                  suppressHydrationWarning
-                />
-              </label>
-            ))}
-            
-            <label className="grid gap-1.5 text-sm text-gray-300 col-span-2 mt-1">
-              <span className="font-semibold uppercase tracking-wider text-[9px] text-gray-400">Primary Learning Goals</span>
-              <textarea 
-                className="bg-black/40 border border-white/10 rounded-none px-4 py-2.5 text-white focus:outline-none focus:border-outskill-lime/50 focus:ring-1 focus:ring-outskill-lime/50 transition-all min-h-[90px] resize-none text-sm" 
-                value={form.goals} 
-                onChange={(e) => setForm((prev) => ({ ...prev, goals: e.target.value }))} 
-                placeholder="What are the specific workflows or problems you are trying to solve?"
-              />
-            </label>
-            
-            <div className="col-span-2 pt-6 border-t border-white/10 mt-2">
-              <div className="flex flex-col sm:flex-row items-center gap-4">
-                <button
-                  type="button"
-                  className={`cta flex-1 w-full text-center py-3 text-sm ${paid ? "opacity-50" : ""}`}
-                  onClick={onPay}
-                  disabled={busy || paid || !isReadyForPayment}
-                >
-                  {paid ? "Payment Authorized" : "Authorize Payment Securely"}
-                </button>
-                <button type="submit" className={`flex-1 w-full text-center px-6 py-3 text-sm font-bold rounded-none transition-all ${paid && !busy ? "bg-white text-black hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.3)]" : "bg-transparent border border-white/20 text-gray-500 cursor-not-allowed"}`} disabled={!paid || busy}>
-                  Complete Enrollment
-                </button>
+        <AnimatePresence mode="wait">
+          {enrolled ? (
+            <motion.div 
+              key="success"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="glass-panel p-12 text-center max-w-xl w-full border-outskill-lime/30 bg-outskill-lime/5 shadow-2xl relative"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-outskill-lime" />
+              <div className="w-20 h-20 bg-outskill-lime rounded-none flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(184,239,67,0.4)]">
+                <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
               </div>
-              
-              {message && (
-                <div className={`mt-4 p-3 rounded-none text-xs ${paid ? "bg-outskill-lime/10 text-outskill-lime border border-outskill-lime/20" : "bg-white/5 text-gray-300 border border-white/10"}`}>
-                  {message}
+              <h2 className="text-4xl font-black text-white mb-4 italic tracking-tight uppercase">Seat Secured!</h2>
+              <p className="text-gray-300 text-lg font-light leading-relaxed mb-8">
+                Welcome to the cohort, <span className="text-outskill-lime font-bold">{form.fullName}</span>. Your registration is complete and your spot is officially locked.
+              </p>
+              <div className="p-4 bg-white/5 border border-white/10 text-xs text-gray-400 font-mono mb-8 tracking-widest">
+                ENROLLMENT_ID: {paymentId.toUpperCase() || "PENDING"}
+              </div>
+              <Link href="/program" className="cta px-8 py-3 text-sm inline-block">Explore Your Journey</Link>
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="process"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-[1fr_350px] gap-8 items-start"
+            >
+              {/* Left Column: Form or Summary */}
+              <div>
+                {!showSummary ? (
+                  <div className="w-full">
+                    <div className="mb-8">
+                      <p className="text-outskill-lime text-[10px] font-bold tracking-[0.4em] uppercase mb-2">Step 01 / 02</p>
+                      <h2 className="text-4xl font-black text-white italic tracking-tight uppercase">Participant Details</h2>
+                    </div>
+
+                    <div className="glass-panel p-8 grid grid-cols-1 md:grid-cols-2 gap-6 relative shadow-2xl">
+                      <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-outskill-lime to-transparent" />
+                      
+                      {[
+                        ["fullName", "Legal Full Name"],
+                        ["email", "Professional Email"],
+                        ["phone", "Direct Phone / Mobile"],
+                        ["organization", "Current Organization"],
+                        ["role", "Professional Title"],
+                      ].map(([key, label]) => (
+                        <div key={key} className={key === "fullName" || key === "organization" ? "col-span-2" : "col-span-1"}>
+                          <label className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-2">{label}</label>
+                          <input
+                            className="w-full bg-black/40 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-outskill-lime/50 transition-all placeholder:text-gray-700 text-sm"
+                            value={form[key as keyof typeof form]}
+                            onChange={(e) => setForm(prev => ({ ...prev, [key]: e.target.value }))}
+                            placeholder={`Enter ${label.toLowerCase()}`}
+                          />
+                        </div>
+                      ))}
+
+                      <div className="col-span-2">
+                        <label className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-2">Learning Goals</label>
+                        <textarea 
+                          className="w-full bg-black/40 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-outskill-lime/50 min-h-[100px] resize-none text-sm"
+                          value={form.goals}
+                          onChange={(e) => setForm(prev => ({ ...prev, goals: e.target.value }))}
+                          placeholder="What specific workflows are you trying to solve?"
+                        />
+                      </div>
+
+                      <div className="col-span-2 pt-6 flex justify-end">
+                        <button 
+                          disabled={!isReadyForPayment}
+                          onClick={() => setShowSummary(true)}
+                          className="cta px-12 py-4 text-sm font-black disabled:opacity-30 disabled:grayscale transition-all"
+                        >
+                          AUTHORIZE PAYMENT SECURELY →
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-full">
+                    <div className="mb-8">
+                      <p className="text-outskill-lime text-[10px] font-bold tracking-[0.4em] uppercase mb-2">Step 02 / 02</p>
+                      <h2 className="text-4xl font-black text-white italic tracking-tight uppercase">Payment Summary</h2>
+                    </div>
+
+                    <div className="glass-panel overflow-hidden border-outskill-lime/30 max-w-2xl shadow-2xl">
+                      <div className="bg-outskill-lime p-8 flex items-center justify-between">
+                         <div className="w-16 h-16 bg-black flex items-center justify-center font-black text-3xl text-outskill-lime italic shadow-lg">G</div>
+                         <div className="text-right">
+                           <p className="text-[11px] text-black/60 font-black uppercase tracking-tight mb-1">Total Enrollment Fee</p>
+                           <p className="text-5xl font-black text-black tracking-tighter">₹499</p>
+                         </div>
+                      </div>
+                      
+                      <div className="p-8 space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="border-b border-white/10 pb-4">
+                            <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Participant</span>
+                            <span className="text-base text-white font-bold">{form.fullName}</span>
+                          </div>
+                          <div className="border-b border-white/10 pb-4">
+                            <span className="text-[9px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Contact</span>
+                            <span className="text-base text-white font-bold">{form.phone}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="pt-6 flex flex-col gap-4">
+                          <button 
+                            disabled={busy}
+                            onClick={onPay}
+                            className="w-full bg-outskill-lime text-black font-black py-5 text-base uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_30px_rgba(184,239,67,0.3)]"
+                          >
+                            {busy ? "INITIALIZING SECURE GATEWAY..." : "PAY ₹499 NOW →"}
+                          </button>
+                          <button 
+                            disabled={busy}
+                            onClick={() => setShowSummary(false)}
+                            className="w-full text-center text-gray-500 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors py-2"
+                          >
+                            ← BACK TO DETAILS
+                          </button>
+                        </div>
+                        
+                        {message && (
+                          <div className="mt-4 p-4 bg-outskill-lime/10 border border-outskill-lime/20 text-center">
+                            <p className="text-outskill-lime text-xs font-bold animate-pulse uppercase tracking-widest">{message}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Right Column: Guarantees */}
+              <div className="flex flex-col gap-6 lg:mt-[104px]">
+                <div className="glass-panel p-6 border-outskill-lime/20 bg-black/40 shadow-xl">
+                   <h3 className="text-sm font-black text-white mb-4 flex items-center gap-2 uppercase tracking-widest">
+                     <span className="w-1.5 h-1.5 bg-outskill-lime"></span>
+                     Cohort Guarantee
+                   </h3>
+                   <div className="space-y-4">
+                     {[
+                       "Direct 1-on-1 Architect support",
+                       "Permanent Alumni Network Access",
+                       "Lifetime access to program library"
+                     ].map(text => (
+                       <div key={text} className="flex items-start gap-3 text-[11px] text-gray-400 leading-tight">
+                         <svg className="w-3.5 h-3.5 text-outskill-lime shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
+                         {text}
+                       </div>
+                     ))}
+                   </div>
                 </div>
-              )}
-            </div>
-          </form>
-
-          <div className="flex flex-col gap-4">
-            <div className="glass-panel p-5 border-outskill-lime/20 shadow-[0_0_30px_rgba(184,239,67,0.05)]">
-               <h3 className="text-base font-bold text-white mb-3 flex items-center gap-2">
-                 <span className="w-2 h-2 rounded-none bg-outskill-lime"></span>
-                 Cohort Guarantee
-               </h3>
-               <p className="text-gray-400 text-xs leading-relaxed font-light mb-3">
-                 Enrollment secures your access to the exclusive fully-guided curriculum, active technical mentoring, and issuance of the verified cryptographic completion certificate.
-               </p>
-               <div className="space-y-2 pt-3 border-t border-white/10">
-                 <div className="flex items-center gap-3 text-[11px] text-gray-300">
-                   <svg className="w-3.5 h-3.5 text-outskill-lime" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                   Direct 1-on-1 Architect support
-                 </div>
-                 <div className="flex items-center gap-3 text-[11px] text-gray-300">
-                   <svg className="w-3.5 h-3.5 text-outskill-lime" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                   Permanent Alumni Network Access
-                 </div>
-                 <div className="flex items-center gap-3 text-[11px] text-gray-300">
-                   <svg className="w-3.5 h-3.5 text-outskill-lime" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"></path></svg>
-                   Lifetime access to program library
-                 </div>
-               </div>
-            </div>
-            
-            <div className="glass-panel p-5 bg-black/60">
-               <div className="flex items-center gap-3 mb-1">
-                 <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
-                 <span className="text-white text-xs font-bold">256-Bit Secure Encrypted</span>
-               </div>
-               <p className="text-[9px] text-gray-500 uppercase tracking-widest mt-1">
-                 Transactions are routed directly through Razorpay PCI-DSS Level 1 compliant gateways.
-               </p>
-            </div>
-          </div>
-
-        </div>
+                
+                <div className="glass-panel p-6 bg-black/60 border-white/5 shadow-xl">
+                   <div className="flex items-center gap-3 mb-2">
+                     <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                     <span className="text-white text-[10px] font-black uppercase tracking-widest">256-Bit SSL Secured</span>
+                   </div>
+                   <p className="text-[9px] text-gray-500 uppercase leading-relaxed tracking-wider">
+                     PCI-DSS Level 1 compliant gateway. Your credentials are never stored.
+                   </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </SiteFrame>
   );

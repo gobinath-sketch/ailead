@@ -10,7 +10,9 @@ describe('API endpoints (e2e)', () => {
   let app: INestApplication;
 
   const paymentsService = {
-    registrationFee: jest.fn().mockReturnValue({ amountPaise: 49900, amountInr: 499 }),
+    registrationFee: jest
+      .fn()
+      .mockReturnValue({ amountPaise: 49900, amountInr: 499 }),
     createOrder: jest.fn().mockResolvedValue({
       keyId: 'rzp_test_mock',
       amount: 49900,
@@ -19,12 +21,18 @@ describe('API endpoints (e2e)', () => {
       paymentId: 'pay_internal_mock',
       description: 'Global Knowledge Technologies - Event Registration',
     }),
-    verifyPayment: jest.fn().mockResolvedValue({ success: true, paymentId: 'pay_internal_mock' }),
-    getPayment: jest.fn().mockResolvedValue({ id: 'pay_internal_mock', status: 'PAID' }),
+    verifyPayment: jest
+      .fn()
+      .mockResolvedValue({ success: true, paymentId: 'pay_internal_mock' }),
+    getPayment: jest
+      .fn()
+      .mockResolvedValue({ id: 'pay_internal_mock', status: 'PAID' }),
   };
 
   const registrationsService = {
-    create: jest.fn().mockResolvedValue({ id: 'reg_01', paymentId: 'pay_internal_mock' }),
+    create: jest
+      .fn()
+      .mockResolvedValue({ id: 'reg_01', paymentId: 'pay_internal_mock' }),
   };
 
   beforeAll(async () => {
@@ -37,7 +45,9 @@ describe('API endpoints (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, transform: true }),
+    );
     await app.init();
   });
 
@@ -52,7 +62,11 @@ describe('API endpoints (e2e)', () => {
   it('POST /payments/create-order success', async () => {
     await request(app.getHttpServer())
       .post('/payments/create-order')
-      .send({ fullName: 'Test User', email: 'user@example.com', phone: '9876543210' })
+      .send({
+        fullName: 'Test User',
+        email: 'user@example.com',
+        phone: '9876543210',
+      })
       .expect(201);
   });
 

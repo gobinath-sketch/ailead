@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PaymentStatus } from '@prisma/client';
 import * as crypto from 'crypto';
@@ -28,7 +32,10 @@ export class PaymentsService {
   }
 
   registrationFee() {
-    return { amountPaise: REGISTRATION_FEE_PAISE, amountInr: REGISTRATION_FEE_PAISE / 100 };
+    return {
+      amountPaise: REGISTRATION_FEE_PAISE,
+      amountInr: REGISTRATION_FEE_PAISE / 100,
+    };
   }
 
   async createOrder(dto: CreateOrderDto) {
@@ -68,7 +75,9 @@ export class PaymentsService {
   async verifyPayment(dto: VerifyPaymentDto) {
     const secret = this.configService.get<string>('RAZORPAY_KEY_SECRET');
     if (!secret) {
-      throw new InternalServerErrorException('Razorpay secret is not configured.');
+      throw new InternalServerErrorException(
+        'Razorpay secret is not configured.',
+      );
     }
 
     const expectedSignature = crypto
@@ -80,7 +89,9 @@ export class PaymentsService {
       throw new BadRequestException('Payment signature verification failed.');
     }
 
-    const payment = await this.prisma.payment.findUnique({ where: { razorpayOrderId: dto.razorpayOrderId } });
+    const payment = await this.prisma.payment.findUnique({
+      where: { razorpayOrderId: dto.razorpayOrderId },
+    });
     if (!payment) {
       throw new BadRequestException('Payment order was not found.');
     }

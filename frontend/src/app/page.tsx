@@ -25,9 +25,9 @@ export default function Home() {
           </p>
           
           <div className="flex flex-wrap justify-center gap-4 mt-6 relative z-10">
-            <a href="https://razorpay.me/@manisekargobinath" target="_blank" rel="noopener noreferrer" className="cta text-lg px-8 py-4">
+            <Link href="/register" className="cta text-lg px-8 py-4">
               Secure Your Access
-            </a>
+            </Link>
             <Link href="/program" className="cta-secondary text-lg px-8 py-4">
               Explore Program
             </Link>

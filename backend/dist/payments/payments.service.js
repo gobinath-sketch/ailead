@@ -68,7 +68,10 @@ let PaymentsService = class PaymentsService {
         this.razorpay = new razorpay_1.default({ key_id: keyId, key_secret: keySecret });
     }
     registrationFee() {
-        return { amountPaise: REGISTRATION_FEE_PAISE, amountInr: REGISTRATION_FEE_PAISE / 100 };
+        return {
+            amountPaise: REGISTRATION_FEE_PAISE,
+            amountInr: REGISTRATION_FEE_PAISE / 100,
+        };
     }
     async createOrder(dto) {
         const order = await this.razorpay.orders.create({
@@ -113,7 +116,9 @@ let PaymentsService = class PaymentsService {
         if (expectedSignature !== dto.razorpaySignature) {
             throw new common_1.BadRequestException('Payment signature verification failed.');
         }
-        const payment = await this.prisma.payment.findUnique({ where: { razorpayOrderId: dto.razorpayOrderId } });
+        const payment = await this.prisma.payment.findUnique({
+            where: { razorpayOrderId: dto.razorpayOrderId },
+        });
         if (!payment) {
             throw new common_1.BadRequestException('Payment order was not found.');
         }

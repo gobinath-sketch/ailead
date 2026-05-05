@@ -19,14 +19,18 @@ let RegistrationsService = class RegistrationsService {
         this.prisma = prisma;
     }
     async create(dto) {
-        const payment = await this.prisma.payment.findUnique({ where: { id: dto.paymentId } });
+        const payment = await this.prisma.payment.findUnique({
+            where: { id: dto.paymentId },
+        });
         if (!payment || payment.status !== client_1.PaymentStatus.PAID) {
             throw new common_1.BadRequestException('Registration is allowed only after successful payment.');
         }
         if (payment.email !== dto.email || payment.phone !== dto.phone) {
             throw new common_1.BadRequestException('Registration details must match paid user details.');
         }
-        const existing = await this.prisma.registration.findUnique({ where: { paymentId: dto.paymentId } });
+        const existing = await this.prisma.registration.findUnique({
+            where: { paymentId: dto.paymentId },
+        });
         if (existing) {
             throw new common_1.BadRequestException('This payment is already used for registration.');
         }

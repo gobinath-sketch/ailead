@@ -12,12 +12,18 @@ const config_1 = require("@nestjs/config");
 const prisma_service_1 = require("./common/prisma.service");
 const payments_module_1 = require("./payments/payments.module");
 const registrations_module_1 = require("./registrations/registrations.module");
+const community_module_1 = require("./community/community.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
-        imports: [config_1.ConfigModule.forRoot({ isGlobal: true }), payments_module_1.PaymentsModule, registrations_module_1.RegistrationsModule],
+        imports: [
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
+            payments_module_1.PaymentsModule,
+            registrations_module_1.RegistrationsModule,
+            community_module_1.CommunityModule,
+        ],
         providers: [prisma_service_1.PrismaService],
     })
 ], AppModule);

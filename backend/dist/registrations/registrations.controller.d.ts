@@ -14,5 +14,6 @@ export declare class RegistrationsController {
         organization: string | null;
         role: string | null;
         goals: string | null;
+        experience: string | null;
     }>;
 }

@@ -1,0 +1,13 @@
+{
+  "name": "lead-master",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "setup": "powershell -File setup.ps1",
+    "dev": "concurrently \"npm run dev --prefix frontend\" \"npm run start:dev --prefix backend\"",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

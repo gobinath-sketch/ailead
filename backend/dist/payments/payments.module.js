@@ -11,13 +11,15 @@ const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../common/prisma.service");
 const payments_controller_1 = require("./payments.controller");
 const payments_service_1 = require("./payments.service");
+const webhook_controller_1 = require("./webhook.controller");
+const webhook_service_1 = require("./webhook.service");
 let PaymentsModule = class PaymentsModule {
 };
 exports.PaymentsModule = PaymentsModule;
 exports.PaymentsModule = PaymentsModule = __decorate([
     (0, common_1.Module)({
-        controllers: [payments_controller_1.PaymentsController],
-        providers: [payments_service_1.PaymentsService, prisma_service_1.PrismaService],
+        controllers: [payments_controller_1.PaymentsController, webhook_controller_1.WebhookController],
+        providers: [payments_service_1.PaymentsService, prisma_service_1.PrismaService, webhook_service_1.WebhookService],
         exports: [payments_service_1.PaymentsService],
     })
 ], PaymentsModule);
