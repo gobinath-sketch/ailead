@@ -5,17 +5,7 @@ import { useState } from "react";
 import Script from "next/script";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-
-type RazorpayInstance = { open: () => void };
-type RazorpayConstructor = new (options: Record<string, unknown>) => RazorpayInstance;
-
-declare global {
-  interface window {
-    Razorpay?: RazorpayConstructor;
-  }
-}
-
-const api = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
+import { API_ENDPOINTS, apiUrl } from "@/lib/api-config";
 
 async function waitForRazorpay(timeoutMs = 12000) {
   const started = Date.now();
@@ -54,7 +44,7 @@ export default function RegisterPage() {
       setMessage("");
       await waitForRazorpay();
       
-      const orderResponse = await fetch(`${api}/payments/create-order`, {
+      const orderResponse = await fetch(apiUrl(API_ENDPOINTS.payments.createOrder), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -84,7 +74,7 @@ export default function RegisterPage() {
             setBusy(true);
             setMessage("Verifying payment...");
             
-            const verify = await fetch(`${api}/payments/verify`, {
+            const verify = await fetch(apiUrl(API_ENDPOINTS.payments.verify), {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -101,7 +91,7 @@ export default function RegisterPage() {
             setPaymentId(verifyResult.paymentId);
             setMessage("Finalizing enrollment...");
 
-            const regResponse = await fetch(`${api}/registrations`, {
+            const regResponse = await fetch(apiUrl(API_ENDPOINTS.registrations.root), {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ ...form, paymentId: verifyResult.paymentId }),

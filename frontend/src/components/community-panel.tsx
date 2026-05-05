@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { API_ENDPOINTS, apiUrl } from "@/lib/api-config";
 
 export function CommunityPanel() {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,15 +28,13 @@ export function CommunityPanel() {
     }
   };
 
-  const api = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000";
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
       // 1. Save to Database
-      await fetch(`${api}/community/lead`, {
+      await fetch(apiUrl(API_ENDPOINTS.community.lead), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
