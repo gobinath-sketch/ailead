@@ -19,9 +19,9 @@ export function Chatbot() {
             style={{ borderRadius: '0px' }}
           >
             {/* Header */}
-            <div className="p-4 bg-outskill-lime flex items-center justify-between">
+            <div className="py-2 px-4 bg-outskill-lime flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-none overflow-hidden bg-black/10">
+                <div className="w-8 h-8 flex items-center justify-center">
                   <Image 
                     src="/chatbot-icon.png" 
                     alt="Bot" 
@@ -31,8 +31,7 @@ export function Chatbot() {
                   />
                 </div>
                 <div>
-                  <h4 className="text-black font-bold text-sm">GKT Assistant</h4>
-                  <p className="text-black/60 text-[10px] font-bold uppercase tracking-wider">Online & Ready</p>
+                  <h4 className="text-black font-bold text-sm">Assistant</h4>
                 </div>
               </div>
               <button 

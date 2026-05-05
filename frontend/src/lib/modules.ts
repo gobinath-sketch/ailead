@@ -7,6 +7,10 @@ export interface ModuleEntry {
   icon: string;
   video?: string;
   externalLink?: string;
+  brief: string;
+  computeLayer: string;
+  latency: string;
+  throughput: string;
 }
 
 export const moduleData: Record<string, ModuleEntry> = {
@@ -18,7 +22,11 @@ export const moduleData: Record<string, ModuleEntry> = {
     skills: ["Transformer Mechanics", "Tokenization Logic", "Privacy & Safety Frameworks", "Bias Mitigation"],
     icon: "⚡",
     video: "/videos/genai_v2.mp4",
-    externalLink: "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/overview"
+    externalLink: "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/learn/overview",
+    brief: "Analyzes the Transformer backbone, self-attention layers, and tokenization pipelines. Focuses on latent space mapping and stochastic prediction accuracy.",
+    computeLayer: "A100 Tensor Core Grid",
+    latency: "28ms",
+    throughput: "1.2k"
   },
   "agentic-ai": {
     title: "Agentic AI",
@@ -28,7 +36,11 @@ export const moduleData: Record<string, ModuleEntry> = {
     skills: ["Process Decomposition", "Memory Management", "Goal Orientation", "Tool Integration"],
     icon: "🤖",
     video: "/videos/agentic.mp4",
-    externalLink: "https://cloud.google.com/discover/what-is-agentic-ai"
+    externalLink: "https://cloud.google.com/discover/what-is-agentic-ai",
+    brief: "Monitors the recursive reasoning loop (Chain-of-Thought) and tool-calling execution. Optimizes for decision-making accuracy and autonomous goal attainment.",
+    computeLayer: "H100 Distributed Cluster",
+    latency: "42ms",
+    throughput: "0.8k"
   },
   "vibe-coding": {
     title: "Vibe Coding",
@@ -38,7 +50,11 @@ export const moduleData: Record<string, ModuleEntry> = {
     skills: ["Intuitive Logic", "Rapid Prototyping", "Natural Language Architecture", "Iterative Refinement"],
     icon: "🌊",
     video: "/videos/vibecoding.mp4",
-    externalLink: "https://developers.openai.com/api/docs"
+    externalLink: "https://developers.openai.com/api/docs",
+    brief: "Tracks the translation of natural language intent into executable syntax. Optimized for rapid code synthesis and structural integrity across complex file systems.",
+    computeLayer: "L40S GPU Inference Node",
+    latency: "12ms",
+    throughput: "3.5k"
   },
   "visual-storytelling": {
     title: "Visual Storytelling",
@@ -48,6 +64,10 @@ export const moduleData: Record<string, ModuleEntry> = {
     skills: ["DALL-E & Midjourney Mastery", "Video Synthesis", "Style Consistency", "Directorial Prompting"],
     icon: "🎨",
     video: "/videos/visual_storytelling.mp4",
-    externalLink: "https://deepmind.google/research"
+    externalLink: "https://deepmind.google/research",
+    brief: "Visualizes the multi-step diffusion process and temporal consistency. Maps prompt semantic weights to high-resolution pixel generation and cinematic frame synthesis.",
+    computeLayer: "RTX 6000 Ada Cluster",
+    latency: "120ms",
+    throughput: "0.2k"
   }
 };

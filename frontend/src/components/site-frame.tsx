@@ -2,12 +2,11 @@ import Link from "next/link";
 import React from "react";
 
 const links = [
-  ["/", "Home"],
-  ["/program", "Program"],
-  ["/curriculum", "Curriculum"],
-  ["/schedule", "Schedule"],
-  ["/mentors", "Mentors"],
-  ["/certificate", "Certificate"],
+  { href: "/", label: "Home" },
+  { href: "/program", label: "Program" },
+  { href: "/schedule", label: "Schedule" },
+  { href: "/mentors", label: "Mentors" },
+  { href: "/certificate", label: "Certificate" },
 ];
 
 
@@ -27,21 +26,15 @@ interface SiteFrameProps {
 }
 
 export function SiteFrame({ title, children }: SiteFrameProps) {
-  const isNoScroll = title === "Global Knowledge Technologies" || title === "Curriculum Breakdown" || title === "Event Schedule" || title === "Your Mentors" || title.includes("Module Explorer");
+  const isNoScroll = title === "Global Knowledge Technologies" || title === "Program Details" || title === "Event Schedule" || title === "Your Mentors" || title.includes("Module Explorer");
   
   return (
     <div className={`shell relative ${isNoScroll ? 'h-screen overflow-hidden' : ''}`}>
       {/* Universal Desktop Background */}
-      <div className="fixed inset-0 z-[-1] overflow-hidden bg-black">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline 
-          className="absolute min-w-full min-h-full object-cover top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-70 transition-opacity duration-1000"
-        >
-          <source src="/bg/bg-video.mp4" type="video/mp4" />
-        </video>
+      <div 
+        className="fixed inset-0 z-[-1] bg-cover bg-center bg-no-repeat transition-all duration-1000"
+        style={{ backgroundImage: `url('/bg/1e5a5ff11f4a6bb60f86b9361ab0aaa3.jpg')` }}
+      >
         {/* Dark overlay for legibility */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/90" />
       </div>
@@ -56,9 +49,9 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
             </h1>
           </div>
           <nav className="hidden md:flex items-center gap-0.5">
-            {links.map(([href, label]) => (
-              <Link key={href} href={href} className="nav-link px-3 py-2 text-sm whitespace-nowrap">
-                {label}
+            {links.map((link) => (
+              <Link key={link.href} href={link.href} className="nav-link px-3 py-2 text-sm whitespace-nowrap">
+                {link.label}
               </Link>
             ))}
             
@@ -93,9 +86,9 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
 
           </nav>
           <div className="flex items-center gap-3">
-             <Link href="/register" className="cta text-sm py-2 px-5 hidden sm:block">
+             <a href="https://razorpay.me/@manisekargobinath" target="_blank" rel="noopener noreferrer" className="cta text-sm py-2 px-5 hidden sm:block">
                 Start Now
-             </Link>
+             </a>
           </div>
         </header>
       </div>

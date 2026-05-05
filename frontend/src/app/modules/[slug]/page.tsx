@@ -267,21 +267,21 @@ export default async function ModuleDetailPage({
                 <div className="flex gap-4">
                   <div className="text-right">
                     <p className="text-[8px] text-gray-400 uppercase font-bold">Latency</p>
-                    <p className="text-[10px] text-white font-mono">14ms</p>
+                    <p className="text-[10px] text-white font-mono">{selectedModule.latency}</p>
                   </div>
                   <div className="text-right">
-                    <p className="text-[8px] text-gray-400 uppercase font-bold">Tokens/Sec</p>
-                    <p className="text-[10px] text-white font-mono">2.4k</p>
+                    <p className="text-[8px] text-gray-400 uppercase font-bold">{isVisualModule ? "Frames/Sec" : "Tokens/Sec"}</p>
+                    <p className="text-[10px] text-white font-mono">{selectedModule.throughput}</p>
                   </div>
                 </div>
               </div>
-              <p className="text-gray-300 text-sm leading-relaxed font-light mb-4">
-                The visual feed demonstrates the end-to-end synthesis pipeline. We map high-dimensional embedding vectors through recursive attention layers to generate real-time, contextually-aware outputs.
+              <p className="text-gray-300 text-[11px] leading-relaxed font-light mb-4 min-h-[48px]">
+                {selectedModule.brief}
               </p>
               <div className="grid grid-cols-2 gap-4 border-t border-white/5 pt-4">
                 <div>
                   <p className="text-[9px] text-gray-500 uppercase font-bold mb-1">Compute Layer</p>
-                  <p className="text-[10px] text-white font-mono uppercase tracking-tighter">NVIDIA H100 Cluster</p>
+                  <p className="text-[10px] text-white font-mono uppercase tracking-tighter">{selectedModule.computeLayer}</p>
                 </div>
                 <div>
                   <p className="text-[9px] text-gray-500 uppercase font-bold mb-1">Model State</p>
