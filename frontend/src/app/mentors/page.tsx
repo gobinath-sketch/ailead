@@ -122,7 +122,7 @@ export default function MentorsPage() {
               className="text-center mb-12"
             >
               <p className="inline-block px-3 py-1 rounded-none border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-xs font-bold tracking-widest uppercase mb-4">
-                Our Faculty
+                Our Mentors
               </p>
               <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-xl mb-4">
                 Learn from Practitioners.
@@ -198,7 +198,7 @@ export default function MentorsPage() {
                   className="absolute -top-12 left-0 text-gray-400 hover:text-white flex items-center gap-2 text-sm uppercase tracking-widest font-bold transition-colors group"
                 >
                   <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M15 19l-7-7 7-7" /></svg>
-                  Back to Faculty
+                  Back
                 </button>
 
                 {/* Left Side: Photo & Quick Info */}
