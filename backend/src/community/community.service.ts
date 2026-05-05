@@ -9,7 +9,7 @@ export class CommunityService {
   async createLead(data: any) {
     return await (this.prisma as any).communityLead.create({
       data: {
-        name: data.name,
+        fullName: data.name,
         email: data.email,
         whatsapp: data.whatsapp,
         role: data.role,

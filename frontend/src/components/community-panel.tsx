@@ -200,7 +200,7 @@ export function CommunityPanel() {
                           onChange={handleChange}
                           className="mt-0.5 accent-[#B8EF43] w-4 h-4 shrink-0"
                         />
-                        <span className="text-xs text-gray-400 group-hover:text-white transition-colors">I want to join the AI Mastermind community</span>
+                        <span className="text-xs text-gray-400 group-hover:text-white transition-colors">Join the community</span>
                       </label>
                       <label className="flex items-start gap-3 cursor-pointer group">
                         <input
@@ -210,7 +210,7 @@ export function CommunityPanel() {
                           onChange={handleChange}
                           className="mt-0.5 accent-[#B8EF43] w-4 h-4 shrink-0"
                         />
-                        <span className="text-xs text-gray-400 group-hover:text-white transition-colors">I want to subscribe to the AI Newsletter</span>
+                        <span className="text-xs text-gray-400 group-hover:text-white transition-colors">Subscribe to the Newsletter</span>
                       </label>
                     </div>
 
