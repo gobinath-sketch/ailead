@@ -35,8 +35,8 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
         className="fixed inset-0 z-[-1] bg-cover bg-center bg-no-repeat transition-all duration-1000"
         style={{ backgroundImage: `url('/bg/1e5a5ff11f4a6bb60f86b9361ab0aaa3.jpg')` }}
       >
-        {/* Dark overlay for legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/90" />
+        {/* Dark overlay for legibility (brightened) */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/70" />
       </div>
 
       {/* Fixed Navigation for premium feel */}
