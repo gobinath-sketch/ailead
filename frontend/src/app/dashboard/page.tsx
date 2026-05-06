@@ -178,9 +178,15 @@ export default function DashboardPage() {
   if (!userData) return null;
 
   return (
-    <div className="min-h-screen bg-white text-black relative overflow-hidden font-sans">
-      {/* --- CLEAN WHITE DASHBOARD (THE BLANK CANVAS) --- */}
-      <div className="w-full h-full min-h-screen flex flex-col items-center justify-center p-8 bg-white">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* --- DASHBOARD BACKGROUND --- */}
+      <div 
+        className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: "url('/AILeads/bg/dashboard-bg.jpg')" }}
+      />
+      
+      {/* --- DASHBOARD CONTENT --- */}
+      <div className="relative z-10 w-full h-full min-h-screen flex flex-col items-center justify-center p-8">
         <div className="opacity-10 pointer-events-none select-none text-center">
            <h1 className="text-8xl font-black italic uppercase tracking-tighter text-gray-200">DASHBOARD</h1>
            <p className="text-gray-300 font-mono mt-4 tracking-[1em] text-sm uppercase">Canvas Ready</p>

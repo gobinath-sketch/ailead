@@ -18,6 +18,11 @@ async function waitForRazorpay(timeoutMs = 12000) {
 }
 
 export default function RegisterPage() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [form, setForm] = useState({
     userType: "professional",
     fullName: "",
@@ -124,53 +129,55 @@ export default function RegisterPage() {
       
       <div className="w-full py-12 flex flex-col items-center min-h-[700px] justify-center relative">
         
-        <AnimatePresence mode="wait">
-          {enrolled ? (
-            <motion.div 
-              key="success"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="glass-panel p-12 text-center max-w-xl w-full border-[#B8EF43]/30 bg-[#B8EF43]/5 shadow-2xl relative"
-            >
-              <div className="absolute top-0 left-0 w-full h-1 bg-[#B8EF43]" />
-              <div className="w-20 h-20 bg-[#B8EF43] rounded-none flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(184,239,67,0.4)]">
-                <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                </svg>
+        {mounted && (
+          <AnimatePresence mode="wait">
+            {enrolled ? (
+              <motion.div 
+                key="success"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="glass-panel p-12 text-center max-w-xl w-full border-[#B8EF43]/30 bg-[#B8EF43]/5 shadow-2xl relative rounded-none"
+              >
+                <div className="absolute top-0 left-0 w-full h-1 bg-[#B8EF43]" />
+                <div className="w-20 h-20 bg-[#B8EF43] rounded-none flex items-center justify-center mx-auto mb-6 shadow-[0_0_30px_rgba(184,239,67,0.4)]">
+                  <svg className="w-10 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h2 className="text-4xl font-black text-white mb-4 italic tracking-tight uppercase">Seat Secured!</h2>
+                <p className="text-gray-300 text-lg font-light leading-relaxed mb-8">
+                  Welcome to the cohort, <span className="text-[#B8EF43] font-bold">{form.fullName}</span>. Your registration is complete and your spot is officially locked.
+                </p>
+                <div className="p-4 bg-white/5 border border-white/10 text-xs text-gray-400 font-mono mb-8 tracking-widest rounded-none">
+                  ENROLLMENT_ID: {paymentId.toUpperCase() || "PENDING"}
+                </div>
+                <Link href="/program" className="bg-[#B8EF43] text-black font-black px-8 py-3 text-sm inline-block uppercase tracking-widest hover:bg-[#c9f95d] rounded-none">Explore Your Journey</Link>
+              </motion.div>
+            ) : (
+              <div className="w-full">
+                 <SteppedRegistration 
+                    onSuccess={setPaymentId}
+                    busy={busy}
+                    setBusy={setBusy}
+                    setMessage={setMessage}
+                    form={form}
+                    setForm={setForm}
+                    onPay={onPay}
+                 />
+                 
+                 {message && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 px-6 py-3 bg-black/80 backdrop-blur-md border border-[#B8EF43]/30 text-[#B8EF43] text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl rounded-none"
+                    >
+                      {message}
+                    </motion.div>
+                 )}
               </div>
-              <h2 className="text-4xl font-black text-white mb-4 italic tracking-tight uppercase">Seat Secured!</h2>
-              <p className="text-gray-300 text-lg font-light leading-relaxed mb-8">
-                Welcome to the cohort, <span className="text-[#B8EF43] font-bold">{form.fullName}</span>. Your registration is complete and your spot is officially locked.
-              </p>
-              <div className="p-4 bg-white/5 border border-white/10 text-xs text-gray-400 font-mono mb-8 tracking-widest">
-                ENROLLMENT_ID: {paymentId.toUpperCase() || "PENDING"}
-              </div>
-              <Link href="/program" className="bg-[#B8EF43] text-black font-black px-8 py-3 text-sm inline-block uppercase tracking-widest hover:bg-[#c9f95d]">Explore Your Journey</Link>
-            </motion.div>
-          ) : (
-            <div className="w-full">
-               <SteppedRegistration 
-                  onSuccess={setPaymentId}
-                  busy={busy}
-                  setBusy={setBusy}
-                  setMessage={setMessage}
-                  form={form}
-                  setForm={setForm}
-                  onPay={onPay}
-               />
-               
-               {message && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="fixed bottom-12 left-1/2 -translate-x-1/2 z-50 px-6 py-3 bg-black/80 backdrop-blur-md border border-[#B8EF43]/30 text-[#B8EF43] text-[10px] font-black uppercase tracking-[0.2em] shadow-2xl"
-                  >
-                    {message}
-                  </motion.div>
-               )}
-            </div>
-          )}
-        </AnimatePresence>
+            )}
+          </AnimatePresence>
+        )}
       </div>
     </SiteFrame>
   );

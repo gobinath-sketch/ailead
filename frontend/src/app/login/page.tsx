@@ -7,6 +7,11 @@ import { API_ENDPOINTS, apiUrl } from "@/lib/api-config";
 import Link from "next/link";
 
 export default function LoginPage() {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [mode, setMode] = useState<"login" | "forgot">("login");
   const [step, setStep] = useState(1); // For forgot password steps
   
@@ -139,11 +144,10 @@ export default function LoginPage() {
     <SiteFrame title="Access Control - Global Knowledge Technologies">
       <div className="w-full py-24 flex flex-col items-center justify-center min-h-[600px]">
         <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="glass-panel p-12 max-w-md w-full border-[#B8EF43]/20 bg-black/40 backdrop-blur-xl relative overflow-hidden"
+          animate={mounted ? { opacity: 1, scale: 1 } : {}}
+          className="glass-panel p-12 max-w-md w-full border-[#B8EF43]/20 bg-black/40 backdrop-blur-xl relative overflow-hidden rounded-none"
         >
-          <div className="absolute top-0 right-0 w-48 h-48 bg-[#B8EF43]/5 blur-[100px] rounded-full -mr-24 -mt-24" />
+          <div className="absolute top-0 right-0 w-48 h-48 bg-[#B8EF43]/5 blur-[100px] rounded-none -mr-24 -mt-24" />
 
           <div className="text-center mb-10 relative z-10">
              <p className="text-[#B8EF43] text-[10px] font-black uppercase tracking-[0.4em] mb-2">
@@ -196,7 +200,7 @@ export default function LoginPage() {
                 <button 
                   onClick={handleLogin}
                   disabled={busy}
-                  className="w-full bg-[#B8EF43] text-black font-black py-4 text-xs uppercase tracking-widest hover:bg-[#c9f95d] transition-all shadow-[0_10px_30px_rgba(184,239,67,0.2)]"
+                  className="w-full bg-[#B8EF43] text-black font-black py-4 text-xs uppercase tracking-widest hover:bg-[#c9f95d] transition-all shadow-[0_10px_30px_rgba(184,239,67,0.2)] rounded-none"
                 >
                   {busy ? "Authenticating..." : "Login to Dashboard →"}
                 </button>
@@ -220,12 +224,12 @@ export default function LoginPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email"
-                      className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white focus:border-[#B8EF43]/50 outline-none text-sm transition-all"
+                      className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white focus:border-[#B8EF43]/50 outline-none text-sm transition-all rounded-none"
                     />
                     <button 
                       onClick={handleSendForgotOtp}
                       disabled={busy}
-                      className="w-full bg-[#B8EF43] text-black font-black py-4 text-xs uppercase tracking-widest hover:bg-[#c9f95d] transition-all"
+                      className="w-full bg-[#B8EF43] text-black font-black py-4 text-xs uppercase tracking-widest hover:bg-[#c9f95d] transition-all rounded-none"
                     >
                       {busy ? "Finding Account..." : "Send Reset Code →"}
                     </button>
@@ -241,10 +245,10 @@ export default function LoginPage() {
                       value={otp}
                       onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
                       placeholder="0000"
-                      className="w-full bg-white/5 border-2 border-white/10 text-white px-6 py-4 text-center text-4xl tracking-[1.2em] font-mono focus:border-[#B8EF43]/50 outline-none transition-all"
+                      className="w-full bg-white/5 border-2 border-white/10 text-white px-6 py-4 text-center text-4xl tracking-[1.2em] font-mono focus:border-[#B8EF43]/50 outline-none transition-all rounded-none"
                     />
                     <div className="flex justify-center items-center gap-2">
-                       <div className="w-2 h-2 rounded-full bg-[#B8EF43] animate-pulse" />
+                       <div className="w-2 h-2 rounded-none bg-[#B8EF43] animate-pulse" />
                        <p className="text-[10px] text-gray-500 uppercase font-black tracking-widest">Auto-Validating...</p>
                     </div>
                   </div>
@@ -259,7 +263,7 @@ export default function LoginPage() {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         placeholder="New Password"
-                        className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white focus:border-[#B8EF43]/50 outline-none text-sm transition-all"
+                        className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white focus:border-[#B8EF43]/50 outline-none text-sm transition-all rounded-none"
                       />
                     </div>
                     <div className="space-y-1">
@@ -269,13 +273,13 @@ export default function LoginPage() {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Retype New Password"
-                        className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white focus:border-[#B8EF43]/50 outline-none text-sm transition-all"
+                        className="w-full bg-white/5 border border-white/10 px-6 py-4 text-white focus:border-[#B8EF43]/50 outline-none text-sm transition-all rounded-none"
                       />
                     </div>
                     <button 
                       onClick={handleUpdatePassword}
                       disabled={busy}
-                      className="w-full bg-[#B8EF43] text-black font-black py-4 text-xs uppercase tracking-widest hover:bg-[#c9f95d] transition-all"
+                      className="w-full bg-[#B8EF43] text-black font-black py-4 text-xs uppercase tracking-widest hover:bg-[#c9f95d] transition-all rounded-none"
                     >
                       {busy ? "Updating..." : "Confirm Create Password →"}
                     </button>
