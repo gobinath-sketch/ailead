@@ -1,7 +1,7 @@
 "use client";
 
 import { SiteFrame } from "@/components/site-frame";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Script from "next/script";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";

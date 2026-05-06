@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { API_ENDPOINTS, apiUrl } from "../../lib/api-config";
 import { AnimatedTicket } from "../../components/ui/ticket-confirmation-card";
+import { DashboardSidebar } from "../../components/dashboard-sidebar";
+import { DashboardHeader } from "../../components/dashboard-header";
 
 declare global {
   interface Window {
@@ -173,12 +175,19 @@ export default function DashboardPage() {
     }
   };
 
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [showTicket, setShowTicket] = useState(true);
 
   if (!userData) return null;
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden bg-black">
+      <DashboardSidebar 
+        isCollapsed={isSidebarCollapsed} 
+        setIsCollapsed={setIsSidebarCollapsed} 
+      />
+      <DashboardHeader />
+
       {/* --- DASHBOARD BACKGROUND --- */}
       <div 
         className="fixed inset-0 z-0 bg-cover bg-center bg-no-repeat"
@@ -186,12 +195,20 @@ export default function DashboardPage() {
       />
       
       {/* --- DASHBOARD CONTENT --- */}
-      <div className="relative z-10 w-full h-full min-h-screen flex flex-col items-center justify-center p-8">
-        <div className="opacity-10 pointer-events-none select-none text-center">
-           <h1 className="text-8xl font-black italic uppercase tracking-tighter text-gray-200">DASHBOARD</h1>
-           <p className="text-gray-300 font-mono mt-4 tracking-[1em] text-sm uppercase">Canvas Ready</p>
+      <motion.div 
+        animate={{ 
+          paddingLeft: isSidebarCollapsed ? "80px" : "280px" 
+        }}
+        transition={{ type: "tween", ease: "easeInOut", duration: 0.2 }}
+        className="relative z-10 w-full min-h-screen flex flex-col p-8"
+      >
+        <div className="flex-1 flex flex-col items-center justify-center">
+          <div className="opacity-10 pointer-events-none select-none text-center">
+             <h1 className="text-8xl font-black italic uppercase tracking-tighter text-white">DASHBOARD</h1>
+             <p className="text-white/40 font-mono mt-4 tracking-[1em] text-sm uppercase">Canvas Ready</p>
+          </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* --- TICKET POPUP (MODAL) --- */}
       <AnimatePresence>
