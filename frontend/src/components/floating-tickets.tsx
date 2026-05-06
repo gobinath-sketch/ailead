@@ -14,16 +14,11 @@ const events = [
 ];
 
 export function FloatingTickets() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <>
-      {/* Stacked Floating Tickets on the right side */}
-      <div className="fixed right-[5%] lg:right-[20%] top-[42%] -translate-y-1/2 pointer-events-none select-none z-[50]">
+    <div className="fixed right-[5%] lg:right-[20%] top-[42%] -translate-y-1/2 select-none z-[50]">
+      <Link href="/schedule">
         <motion.div
           initial={{ y: 0, rotate: -15 }}
-          style={{ pointerEvents: "auto" }}
-          onClick={() => setOpen(true)}
           className="cursor-pointer hover:scale-105 transition-transform relative"
         >
           {/* Back Ticket 2 */}
@@ -39,71 +34,8 @@ export function FloatingTickets() {
             <TicketShape />
           </div>
         </motion.div>
-      </div>
-
-      {/* Events Modal (same as before) */}
-      <AnimatePresence>
-        {open && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              onClick={() => setOpen(false)}
-              className="fixed inset-0 z-[80] bg-black/70 backdrop-blur-sm"
-            />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, y: 30 }}
-              transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed z-[90] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-lg bg-[#0a0a0a] border border-white/10 shadow-2xl overflow-hidden"
-            >
-              {/* Header */}
-              <div className="p-6 border-b border-white/10 flex justify-between items-center">
-                <div>
-                  <p className="text-[#B8EF43] text-[10px] font-black uppercase tracking-[0.4em] mb-1">Global Knowledge Technologies</p>
-                  <h2 className="text-2xl font-black uppercase tracking-tighter text-white">Event Schedule</h2>
-                </div>
-                <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-white transition-colors">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Event List */}
-              <div className="p-6 space-y-3 max-h-[60vh] overflow-y-auto">
-                {events.map((ev, i) => (
-                  <motion.div
-                    key={ev.id}
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: i * 0.05 }}
-                    className="flex items-start gap-4 p-4 bg-white/5 border border-white/10 hover:border-[#B8EF43]/30 transition-colors group"
-                  >
-                    <div className="w-1 h-full min-h-[40px] bg-[#B8EF43] shrink-0 self-stretch" />
-                    <div>
-                      <p className="text-[#B8EF43] text-[10px] font-black uppercase tracking-widest mb-1">{ev.time}</p>
-                      <p className="text-white font-bold text-sm">{ev.title}</p>
-                      <p className="text-gray-500 text-xs mt-0.5">{ev.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Footer CTA */}
-              <div className="p-6 border-t border-white/10 flex gap-3">
-                <Link href="/register" className="flex-1 bg-[#B8EF43] text-black font-black py-3 text-xs uppercase tracking-widest text-center hover:bg-[#c9f95d] transition-all">
-                  Secure Your Seat →
-                </Link>
-                <button onClick={() => setOpen(false)} className="px-6 text-[10px] font-black uppercase tracking-widest text-gray-500 hover:text-white border border-white/10 transition-colors">
-                  Close
-                </button>
-              </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
-    </>
+      </Link>
+    </div>
   );
 }
 

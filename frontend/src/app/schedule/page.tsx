@@ -2,7 +2,7 @@ import { SiteFrame } from "@/components/site-frame";
 
 export default function SchedulePage() {
   return (
-    <SiteFrame title="Event Schedule">
+    <SiteFrame title="Events">
       <div className="pt-8 pb-12 w-full h-full flex flex-col justify-center">
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto w-full">

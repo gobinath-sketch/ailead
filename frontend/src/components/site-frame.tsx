@@ -4,7 +4,7 @@ import React from "react";
 const links = [
   { href: "/", label: "Home" },
   { href: "/program", label: "Program" },
-  { href: "/schedule", label: "Schedule" },
+  { href: "/schedule", label: "Events" },
   { href: "/mentors", label: "Mentors" },
   { href: "/certificate", label: "Certificate" },
 ];
