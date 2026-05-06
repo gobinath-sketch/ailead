@@ -200,7 +200,7 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
         <div
           ref={ref}
           className={cn(
-            "relative w-full max-w-sm bg-black border border-[#B8EF43]/30 text-white rounded-2xl shadow-2xl font-sans z-10",
+            "relative w-full max-w-sm bg-black border border-[#B8EF43]/30 text-white rounded-none shadow-2xl font-sans z-10",
             "animate-in fade-in-0 zoom-in-95 duration-500",
             className
           )}
@@ -209,7 +209,7 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
           {/* Clean Edges (No Notches) */}
 
           <div className="p-8 flex flex-col items-center text-center">
-              <div className="p-3 bg-[#B8EF43]/10 rounded-full animate-in zoom-in-50 delay-300 duration-500">
+              <div className="p-3 bg-[#B8EF43]/10 rounded-none animate-in zoom-in-50 delay-300 duration-500">
                   <CheckCircleIcon className="w-10 h-10 text-[#B8EF43] animate-in zoom-in-75 delay-500 duration-500" />
               </div>
               <h1 className="text-2xl font-semibold mt-4 text-[#B8EF43] uppercase tracking-widest italic font-black">Thank you!</h1>
@@ -237,12 +237,12 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
                   <p className="font-medium text-sm">{formattedDate}</p>
               </div>
 
-              <div className="bg-white/5 border border-white/10 p-4 rounded-lg flex items-center space-x-4">
-                  <MastercardIcon />
-                  <div>
-                      <p className="font-semibold text-sm">{cardHolder}</p>
-                      <p className="text-gray-400 font-mono text-xs tracking-wider">•••• {last4Digits}</p>
-                  </div>
+              <div className="mt-6 w-full p-4 bg-white/5 border border-white/10 rounded-none flex items-center gap-4">
+                <MastercardIcon />
+                <div className="text-left flex-1">
+                  <p className="text-[10px] font-bold uppercase text-white tracking-widest">{cardHolder}</p>
+                  <p className="text-[8px] font-mono text-white/40 mt-0.5 tracking-widest">•••• {last4Digits}</p>
+                </div>
               </div>
 
               <DashedLine />

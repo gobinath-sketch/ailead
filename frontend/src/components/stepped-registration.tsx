@@ -228,7 +228,7 @@ export function SteppedRegistration({
                     className={`w-full py-2 border border-dashed transition-all duration-500 flex items-center justify-center gap-2 ${isScanning ? 'border-[#B8EF43] bg-[#B8EF43]/5' : 'border-white/10 hover:border-[#B8EF43]/30 bg-white/5'}`}
                   >
                     {isScanning ? (
-                      <div className="w-4 h-4 border-2 border-[#B8EF43]/30 border-t-[#B8EF43] rounded-full animate-spin" />
+                      <div className="w-4 h-4 border-2 border-[#B8EF43]/30 border-t-[#B8EF43] rounded-none animate-spin" />
                     ) : (
                       <span className="text-gray-400 text-[9px] font-bold uppercase tracking-widest">+ Scan ID Card</span>
                     )}
@@ -352,7 +352,7 @@ export function SteppedRegistration({
                 <input
                   type="text"
                   maxLength={4}
-                  className="w-full bg-white/5 border-2 border-white/10 hover:border-white/20 focus:border-[#B8EF43]/50 outline-none px-6 py-4 text-center text-4xl tracking-[1em] text-white font-mono rounded-xl transition-all placeholder:text-white/10"
+                  className="w-full bg-white/5 border-2 border-white/10 hover:border-white/20 focus:border-[#B8EF43]/50 outline-none px-6 py-4 text-center text-4xl tracking-[1em] text-white font-mono rounded-none transition-all placeholder:text-white/10"
                   value={otp}
                   onChange={(e) => setOtp(e.target.value.replace(/\D/g, ''))}
                   placeholder="0000"
@@ -361,10 +361,10 @@ export function SteppedRegistration({
                 <button 
                   onClick={handleVerifyOtp}
                   disabled={busy || otp.length !== 4}
-                  className="w-full bg-[#B8EF43] text-black font-black py-4 text-sm uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_40px_rgba(184,239,67,0.3)] disabled:opacity-50 disabled:hover:scale-100"
+                  className="w-full bg-[#B8EF43] text-black font-black py-4 text-sm uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_40px_rgba(184,239,67,0.3)] disabled:opacity-50 disabled:hover:scale-100 rounded-none"
                 >
                   {busy ? (
-                    <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin mx-auto" />
+                    <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-none animate-spin mx-auto" />
                   ) : "Verify & Unlock →"}
                 </button>
               </div>

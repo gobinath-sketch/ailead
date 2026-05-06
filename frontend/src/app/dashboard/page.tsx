@@ -225,7 +225,7 @@ export default function DashboardPage() {
               
               <button 
                 onClick={() => setShowTicket(false)}
-                className="mt-12 mx-auto block text-white/40 hover:text-white text-[10px] uppercase font-bold tracking-[0.3em] transition-colors"
+                className="mt-12 mx-auto flex items-center gap-2 px-8 py-3 rounded-none bg-white/10 border border-white/20 text-white text-[11px] uppercase font-black tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 shadow-xl"
               >
                 Back to Dashboard
               </button>
@@ -238,7 +238,7 @@ export default function DashboardPage() {
       {isPaid && !showTicket && (
         <button 
           onClick={() => setShowTicket(true)}
-          className="fixed bottom-8 right-8 z-[110] bg-black text-white text-[10px] font-black uppercase tracking-widest px-6 py-3 rounded-full hover:scale-105 transition-all shadow-2xl border border-white/10"
+          className="fixed bottom-8 right-8 z-[110] bg-black text-white text-[10px] font-black uppercase tracking-widest px-6 py-3 rounded-none hover:scale-105 transition-all shadow-2xl border border-white/10"
         >
           View Ticket
         </button>
@@ -254,8 +254,8 @@ export default function DashboardPage() {
           >
             <div className="absolute inset-0 bg-white/60 backdrop-blur-sm" />
             
-            <div className="relative border border-gray-200 p-8 md:p-12 w-full max-w-md text-center bg-white shadow-2xl rounded-[40px]">
-              <div className="w-16 h-16 bg-[#B8EF43]/10 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="relative border border-gray-200 p-8 md:p-12 w-full max-w-md text-center bg-white shadow-2xl rounded-none">
+              <div className="w-16 h-16 bg-[#B8EF43]/10 rounded-none flex items-center justify-center mx-auto mb-6">
                 <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
@@ -263,7 +263,7 @@ export default function DashboardPage() {
               <h2 className="text-3xl font-black italic uppercase tracking-tighter text-gray-900 mb-2">Unlock Pass</h2>
               <p className="text-gray-500 text-sm mb-8 font-medium">Complete your enrollment to instantly receive your official dev-pass ticket.</p>
               
-              <div className="bg-gray-50 border border-gray-100 p-6 rounded-3xl mb-8 flex justify-between items-center text-left">
+              <div className="bg-gray-50 border border-gray-100 p-6 rounded-none mb-8 flex justify-between items-center text-left">
                  <div>
                    <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Total Fee</p>
                    <p className="text-gray-900 font-black italic">REGISTRATION</p>
@@ -276,10 +276,10 @@ export default function DashboardPage() {
               <button 
                 onClick={handlePayment}
                 disabled={busy}
-                className="w-full bg-black text-white font-black py-5 rounded-2xl text-xs uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl flex justify-center items-center"
+                className="w-full bg-black text-white font-black py-5 rounded-none text-xs uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl flex justify-center items-center"
               >
                 {busy ? (
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-none animate-spin" />
                 ) : (
                   "Enroll Now →"
                 )}
