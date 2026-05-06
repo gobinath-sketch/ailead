@@ -34,7 +34,7 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
       {/* Universal Desktop Background */}
       <div 
         className="fixed inset-0 z-[-1] bg-cover bg-center bg-no-repeat transition-all duration-1000"
-        style={{ backgroundImage: `url('/bg/1e5a5ff11f4a6bb60f86b9361ab0aaa3.jpg')` }}
+        style={{ backgroundImage: `url('/AILeads/bg/1e5a5ff11f4a6bb60f86b9361ab0aaa3.jpg')` }}
       >
         {/* Dark overlay for legibility (brightened) */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/70" />
@@ -45,7 +45,7 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
         <header className="nav-pill flex items-center justify-between gap-8 max-w-7xl xl:max-w-[1440px] w-full hover:bg-black/80 transition-all duration-500">
           <div className="flex items-center gap-2">
             <h1 className="text-xl font-bold tracking-tight text-white flex items-center gap-3">
-              <img src="/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
+              <img src="/AILeads/logo.png" alt="Logo" className="w-8 h-8 object-contain" />
               Global Knowledge Technologies
             </h1>
           </div>

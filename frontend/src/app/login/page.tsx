@@ -47,7 +47,7 @@ export default function LoginPage() {
       // Save user details for dashboard
       localStorage.setItem("registrationData", JSON.stringify(data.user));
       setMessage("Success! Redirecting...");
-      window.location.href = "/dashboard";
+      window.location.href = "/AILeads/dashboard";
     } catch (err: any) {
       setMessage(err.message || "Invalid credentials.");
     } finally {

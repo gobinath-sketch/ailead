@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Global Knowledge Technologies",
   icons: {
-    icon: "/logo.png",
+    icon: "/AILeads/logo.png",
   },
 };
 

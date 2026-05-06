@@ -23,7 +23,7 @@ export function Chatbot() {
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 flex items-center justify-center">
                   <Image 
-                    src="/chatbot-icon.png" 
+                    src="/AILeads/chatbot-icon.png" 
                     alt="Bot" 
                     width={32} 
                     height={32} 
@@ -92,7 +92,7 @@ export function Chatbot() {
         className="w-32 h-32 flex items-center justify-center relative group bg-transparent border-none p-0 cursor-pointer outline-none drop-shadow-[0_0_20px_rgba(184,239,67,0.3)] hover:drop-shadow-[0_0_35px_rgba(184,239,67,0.5)] transition-all duration-500"
       >
         <Image 
-          src="/chatbot-icon.png" 
+          src="/AILeads/chatbot-icon.png" 
           alt="Chatbot" 
           width={120} 
           height={120} 

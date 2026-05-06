@@ -57,7 +57,7 @@ export default function CertificatePage() {
             <article className="glass-panel p-2 relative shadow-2xl border-white/20 rotate-2 hover:rotate-0 transition-transform duration-500">
               <div className="border border-white/10 bg-black/80 rounded-none p-1 flex items-center justify-center relative overflow-hidden group">
                  <img 
-                   src="/certificate-mockup.png" 
+                   src="/AILeads/certificate-mockup.png" 
                    alt="Certificate Mockup" 
                    className="w-full h-auto object-contain opacity-90 group-hover:opacity-100 transition-opacity duration-500" 
                  />

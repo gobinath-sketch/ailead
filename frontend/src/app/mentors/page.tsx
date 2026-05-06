@@ -21,7 +21,7 @@ const mentors = [
       "Proven ability to lead and inspire global, cross-functional teams to push the boundaries of what's possible.",
       "Creative, strategic thinker with exceptional analytical skills, constantly exploring new ways to harness advanced tech."
     ],
-    image: "/mentors/s.webp",
+    image: "/AILeads/mentors/s.webp",
     linkedin: "https://www.linkedin.com/in/sendhil-kumar-a6aa13122"
   },
   {
@@ -36,7 +36,7 @@ const mentors = [
       "Deeply skilled in EAI, Unix, and complex database management systems.",
       "16+ years experience in technical training and software engineering leadership."
     ],
-    image: "/mentors/p.webp",
+    image: "/AILeads/mentors/p.webp",
     linkedin: "https://www.linkedin.com/in/pmdarius"
   },
   {
@@ -51,7 +51,7 @@ const mentors = [
       "Expert in Deep Learning architectures and LLM fine-tuning",
       "Leads technical R&D for advanced AI implementation frameworks"
     ],
-    image: "/mentors/r.webp",
+    image: "/AILeads/mentors/r.webp",
     linkedin: "https://www.linkedin.com/in/dr-s-radhika-pandiyan-8b263116"
   },
   {
@@ -66,7 +66,7 @@ const mentors = [
       "Architect of high-scale enterprise AI product ecosystems",
       "Mentors startups on technical debt reduction and AI integration"
     ],
-    image: "/mentors/d.webp",
+    image: "/AILeads/mentors/d.webp",
     linkedin: "https://www.linkedin.com/in/dineshthan"
   },
 ];

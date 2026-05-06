@@ -33,7 +33,7 @@ export function Marquee() {
           >
             <div className="relative h-6 flex items-center justify-center gap-3">
               <Image
-                src={`/logos/${logo.logoKey}.png`}
+                src={`/AILeads/logos/${logo.logoKey}.png`}
                 alt={logo.name}
                 width={40}
                 height={40}

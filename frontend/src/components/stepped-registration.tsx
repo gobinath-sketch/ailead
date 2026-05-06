@@ -101,7 +101,7 @@ export function SteppedRegistration({
       setMessage("Verification successful! Redirecting...");
       
       // Redirect to Dashboard
-      window.location.href = "/dashboard";
+      window.location.href = "/AILeads/dashboard";
     } catch (err) {
       setMessage("Invalid or expired OTP.");
     } finally {
