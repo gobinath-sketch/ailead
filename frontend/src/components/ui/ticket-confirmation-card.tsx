@@ -196,9 +196,7 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
           )}
           {...props}
         >
-          {/* Ticket cut-out effect */}
-          <div className="absolute -left-4 top-[140px] -translate-y-1/2 w-8 h-8 rounded-full bg-black/80" />
-          <div className="absolute -right-4 top-[140px] -translate-y-1/2 w-8 h-8 rounded-full bg-black/80" />
+          {/* Clean Edges (No Notches) */}
 
           <div className="p-8 flex flex-col items-center text-center">
               <div className="p-3 bg-[#B8EF43]/10 rounded-full animate-in zoom-in-50 delay-300 duration-500">

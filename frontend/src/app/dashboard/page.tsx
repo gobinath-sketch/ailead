@@ -173,72 +173,76 @@ export default function DashboardPage() {
     }
   };
 
+  const [showTicket, setShowTicket] = useState(true);
+
   if (!userData) return null;
 
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden font-sans pt-24">
-      {/* --- DASHBOARD CONTENT (BLURRED INITIALLY) --- */}
-      <div className={`transition-all duration-1000 w-full max-w-6xl mx-auto p-4 ${!isPaid ? "blur-md opacity-40 pointer-events-none select-none" : "blur-none opacity-100"}`}>
-        <div className="flex justify-between items-center mb-12">
-          <div>
-            <h1 className="text-4xl font-black italic uppercase tracking-tighter">Welcome, {userData.fullName}</h1>
-            <p className="text-[#B8EF43] font-mono mt-2 tracking-widest text-sm">EVENT DASHBOARD</p>
-          </div>
-          {isPaid && (
-            <div className="bg-[#B8EF43]/10 text-[#B8EF43] px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-[#B8EF43]/30">
-              Access Granted
-            </div>
-          )}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main Area */}
-          <div className="lg:col-span-2 space-y-6">
-             <div className="bg-white/5 border border-white/10 p-8 rounded-2xl h-64 flex flex-col justify-end relative overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent z-10" />
-                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1591453089816-0fbb971b454c?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700" />
-                <div className="relative z-20">
-                  <span className="bg-[#B8EF43] text-black text-[10px] font-bold px-3 py-1 uppercase tracking-widest mb-4 inline-block">Upcoming Live Session</span>
-                  <h2 className="text-3xl font-black uppercase tracking-tighter mb-2">Introduction to GenAI</h2>
-                  <p className="text-gray-400 font-mono text-sm">Starts in: 02d 14h 30m</p>
-                </div>
-             </div>
-             <div className="grid grid-cols-2 gap-6">
-                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                  <h3 className="text-lg font-bold mb-4">Course Progress</h3>
-                  <div className="w-full bg-white/10 h-2 rounded-full overflow-hidden">
-                    <div className="w-[10%] h-full bg-[#B8EF43]" />
-                  </div>
-                  <p className="text-right text-gray-500 mt-2 text-xs">10% Completed</p>
-                </div>
-                <div className="bg-white/5 border border-white/10 p-6 rounded-2xl">
-                  <h3 className="text-lg font-bold mb-4">Certificates</h3>
-                  <p className="text-gray-500 text-sm">Complete modules to unlock your verified certificates.</p>
-                </div>
-             </div>
-          </div>
-
-          {/* Sidebar Area */}
-          <div className="space-y-6">
-            {isPaid && ticketData ? (
-               <div className="flex justify-center w-full">
-                 <AnimatedTicket 
-                   ticketId={ticketData.ticketId}
-                   amount={ticketData.amount}
-                   date={ticketData.date}
-                   cardHolder={ticketData.cardHolder}
-                   last4Digits={ticketData.last4Digits}
-                   barcodeValue={ticketData.barcodeValue}
-                 />
-               </div>
-            ) : (
-              <div className="bg-white/5 border border-white/10 p-6 rounded-2xl h-96 flex items-center justify-center">
-                 <p className="text-gray-500 font-mono text-sm">Your Ticket Appears Here</p>
-              </div>
-            )}
-          </div>
+    <div className="min-h-screen bg-white text-black relative overflow-hidden font-sans">
+      {/* --- CLEAN WHITE DASHBOARD (THE BLANK CANVAS) --- */}
+      <div className="w-full h-full min-h-screen flex flex-col items-center justify-center p-8 bg-white">
+        <div className="opacity-10 pointer-events-none select-none text-center">
+           <h1 className="text-8xl font-black italic uppercase tracking-tighter text-gray-200">DASHBOARD</h1>
+           <p className="text-gray-300 font-mono mt-4 tracking-[1em] text-sm uppercase">Canvas Ready</p>
         </div>
       </div>
+
+      {/* --- TICKET POPUP (MODAL) --- */}
+      <AnimatePresence>
+        {isPaid && showTicket && ticketData && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 flex items-center justify-center z-[100] p-4"
+          >
+            {/* Dark Backdrop */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/80 backdrop-blur-md" 
+            />
+            
+            {/* The Ticket Popup */}
+            <motion.div
+              initial={{ scale: 0.8, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.8, y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              className="relative z-10 w-full max-w-sm"
+            >
+              <div className="flex justify-center">
+                <AnimatedTicket 
+                  ticketId={ticketData.ticketId}
+                  amount={ticketData.amount}
+                  date={ticketData.date}
+                  cardHolder={ticketData.cardHolder}
+                  last4Digits={ticketData.last4Digits}
+                  barcodeValue={ticketData.barcodeValue}
+                />
+              </div>
+              
+              <button 
+                onClick={() => setShowTicket(false)}
+                className="mt-12 mx-auto block text-white/40 hover:text-white text-[10px] uppercase font-bold tracking-[0.3em] transition-colors"
+              >
+                ← Back to Dashboard
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* --- RESTORE TICKET BUTTON (SMALL FLOATING TOGGLE) --- */}
+      {isPaid && !showTicket && (
+        <button 
+          onClick={() => setShowTicket(true)}
+          className="fixed bottom-8 right-8 z-[110] bg-black text-white text-[10px] font-black uppercase tracking-widest px-6 py-3 rounded-full hover:scale-105 transition-all shadow-2xl border border-white/10"
+        >
+          View Ticket
+        </button>
+      )}
 
       {/* --- PAYMENT MODAL (ONLY WHEN NOT PAID) --- */}
       <AnimatePresence>
@@ -248,37 +252,36 @@ export default function DashboardPage() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             className="absolute inset-0 flex items-center justify-center z-50 p-4"
           >
-            {/* Dark overlay specifically for the modal to pop out */}
-            <div className="absolute inset-0 bg-black/60" />
+            <div className="absolute inset-0 bg-white/60 backdrop-blur-sm" />
             
-            <div className="relative glass-panel border border-white/10 p-8 md:p-12 w-full max-w-md text-center bg-black/80 backdrop-blur-2xl shadow-2xl">
+            <div className="relative border border-gray-200 p-8 md:p-12 w-full max-w-md text-center bg-white shadow-2xl rounded-[40px]">
               <div className="w-16 h-16 bg-[#B8EF43]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg className="w-8 h-8 text-[#B8EF43]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
-              <h2 className="text-3xl font-black italic uppercase tracking-tighter text-white mb-2">Unlock Dashboard</h2>
-              <p className="text-gray-400 text-sm mb-8">Complete your enrollment to instantly access all event modules, live sessions, and your official Dev Pass ticket.</p>
+              <h2 className="text-3xl font-black italic uppercase tracking-tighter text-gray-900 mb-2">Unlock Pass</h2>
+              <p className="text-gray-500 text-sm mb-8 font-medium">Complete your enrollment to instantly receive your official dev-pass ticket.</p>
               
-              <div className="bg-white/5 border border-white/10 p-4 rounded-xl mb-8 flex justify-between items-center text-left">
+              <div className="bg-gray-50 border border-gray-100 p-6 rounded-3xl mb-8 flex justify-between items-center text-left">
                  <div>
-                   <p className="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Enrollment Fee</p>
-                   <p className="text-white font-bold">Registration Pass</p>
+                   <p className="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Total Fee</p>
+                   <p className="text-gray-900 font-black italic">REGISTRATION</p>
                  </div>
                  <div className="text-right">
-                   <p className="text-2xl font-black text-[#B8EF43]">₹499</p>
+                   <p className="text-3xl font-black text-gray-900 tracking-tighter">₹499</p>
                  </div>
               </div>
 
               <button 
                 onClick={handlePayment}
                 disabled={busy}
-                className="w-full bg-[#B8EF43] text-black font-black py-4 text-sm uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_10px_40px_rgba(184,239,67,0.3)] flex justify-center items-center"
+                className="w-full bg-black text-white font-black py-5 rounded-2xl text-xs uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl flex justify-center items-center"
               >
                 {busy ? (
-                  <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
-                  "Proceed to Pay →"
+                  "Enroll Now →"
                 )}
               </button>
             </div>
