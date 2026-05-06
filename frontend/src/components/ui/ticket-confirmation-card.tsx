@@ -103,30 +103,36 @@ const ConfettiExplosion = () => {
         {`
           @keyframes fall {
             0% {
-                transform: translateY(-10vh) rotate(0deg);
+                transform: translateY(-20vh) rotate(0deg);
                 opacity: 1;
             }
             100% {
-              transform: translateY(110vh) rotate(720deg);
+              transform: translateY(120vh) rotate(720deg);
               opacity: 0;
             }
           }
         `}
       </style>
-      <div className="fixed inset-0 z-0 pointer-events-none" aria-hidden="true">
-        {Array.from({ length: confettiCount }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-2 h-4"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${-20 + Math.random() * 10}%`,
-              backgroundColor: colors[i % colors.length],
-              transform: `rotate(${Math.random() * 360}deg)`,
-              animation: `fall ${2.5 + Math.random() * 2.5}s ${Math.random() * 2}s linear forwards`,
-            }}
-          />
-        ))}
+      <div className="fixed inset-0 z-[200] pointer-events-none" aria-hidden="true">
+        {Array.from({ length: confettiCount }).map((_, i) => {
+          const startTop = -30 - Math.random() * 20; // Start significantly off-screen
+          const duration = 3 + Math.random() * 3;
+          const delay = Math.random() * 2;
+          
+          return (
+            <div
+              key={i}
+              className="absolute w-2 h-4"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${startTop}%`,
+                backgroundColor: colors[i % colors.length],
+                transform: `rotate(${Math.random() * 360}deg)`,
+                animation: `fall ${duration}s ${delay}s linear forwards`,
+              }}
+            />
+          );
+        })}
       </div>
     </>
   );
@@ -185,8 +191,17 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
     }).format(date).replace(',', ' •');
 
     return (
-      <>
-        {showConfetti && <ConfettiExplosion />}
+      <div className="relative">
+        {showConfetti && (
+          <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-[200]">
+            <ConfettiExplosion 
+              force={0.8}
+              duration={3000}
+              particleCount={100}
+              width={1600}
+            />
+          </div>
+        )}
         <div
           ref={ref}
           className={cn(
@@ -240,7 +255,7 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
               <Barcode value={barcodeValue} />
           </div>
         </div>
-      </>
+      </div>
     );
   }
 );
