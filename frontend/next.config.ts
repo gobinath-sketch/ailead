@@ -2,7 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   basePath: "/AILeads",
-  /* No experimental root needed, we will fix via dependencies */
+  async redirects() {
+    return [
+      {
+        source: "/",
+        destination: "/AILeads",
+        basePath: false,
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
