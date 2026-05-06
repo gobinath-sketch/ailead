@@ -194,12 +194,7 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
       <div className="relative">
         {showConfetti && (
           <div className="fixed inset-0 pointer-events-none flex items-center justify-center z-[200]">
-            <ConfettiExplosion 
-              force={0.8}
-              duration={3000}
-              particleCount={100}
-              width={1600}
-            />
+            <ConfettiExplosion />
           </div>
         )}
         <div
