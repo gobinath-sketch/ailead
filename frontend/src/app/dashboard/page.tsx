@@ -227,7 +227,7 @@ export default function DashboardPage() {
                 onClick={() => setShowTicket(false)}
                 className="mt-12 mx-auto block text-white/40 hover:text-white text-[10px] uppercase font-bold tracking-[0.3em] transition-colors"
               >
-                ← Back to Dashboard
+                Back to Dashboard
               </button>
             </motion.div>
           </motion.div>
