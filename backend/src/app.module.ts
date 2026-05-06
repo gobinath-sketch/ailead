@@ -4,6 +4,7 @@ import { PrismaService } from './common/prisma.service';
 import { PaymentsModule } from './payments/payments.module';
 import { RegistrationsModule } from './registrations/registrations.module';
 import { CommunityModule } from './community/community.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { CommunityModule } from './community/community.module';
     PaymentsModule,
     RegistrationsModule,
     CommunityModule,
+    AuthModule,
   ],
   providers: [PrismaService],
 })

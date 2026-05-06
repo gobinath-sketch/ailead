@@ -14,8 +14,16 @@ export class CreateRegistrationDto {
 
   @IsString()
   @IsNotEmpty()
+  userType!: string; // student or professional
+
+  @IsString()
+  @IsNotEmpty()
   @MaxLength(120)
   fullName!: string;
+
+  @IsString()
+  @IsOptional()
+  lastName?: string;
 
   @IsEmail()
   email!: string;
@@ -26,13 +34,37 @@ export class CreateRegistrationDto {
 
   @IsString()
   @IsOptional()
-  @MaxLength(120)
+  password?: string;
+
+  // Student Specific
+  @IsString()
+  @IsOptional()
+  collegeName?: string;
+
+  @IsString()
+  @IsOptional()
+  courseName?: string;
+
+  @IsString()
+  @IsOptional()
+  studyYear?: string;
+
+  // Professional Specific
+  @IsString()
+  @IsOptional()
   organization?: string;
 
   @IsString()
   @IsOptional()
-  @MaxLength(120)
   role?: string;
+
+  @IsString()
+  @IsOptional()
+  experience?: string;
+
+  @IsString()
+  @IsOptional()
+  domain?: string;
 
   @IsString()
   @IsOptional()

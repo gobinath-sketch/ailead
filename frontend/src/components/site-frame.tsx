@@ -87,8 +87,11 @@ export function SiteFrame({ title, children }: SiteFrameProps) {
 
           </nav>
           <div className="flex items-center gap-3">
+             <Link href="/login" className="cta text-sm py-2 px-5 hidden sm:block">
+                Login
+             </Link>
              <Link href="/register" className="cta text-sm py-2 px-5 hidden sm:block">
-                Start Now
+                Register
              </Link>
           </div>
         </header>

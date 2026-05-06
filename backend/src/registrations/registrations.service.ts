@@ -18,31 +18,51 @@ export class RegistrationsService {
       );
     }
 
-    if (payment.email !== dto.email || payment.phone !== dto.phone) {
-      throw new BadRequestException(
-        'Registration details must match paid user details.',
-      );
-    }
-
     const existing = await this.prisma.registration.findUnique({
       where: { paymentId: dto.paymentId },
     });
     if (existing) {
-      throw new BadRequestException(
-        'This payment is already used for registration.',
-      );
+      throw new BadRequestException('This payment is already used for registration.');
+    }
+
+    const duplicateUser = await this.prisma.registration.findFirst({
+      where: { OR: [{ email: dto.email }, { phone: dto.phone }] }
+    });
+    if (duplicateUser) {
+      const field = duplicateUser.email === dto.email ? 'Email' : 'Phone number';
+      throw new BadRequestException(`${field} is already associated with another registration.`);
     }
 
     return this.prisma.registration.create({
       data: {
         paymentId: dto.paymentId,
+        userType: dto.userType,
         fullName: dto.fullName,
+        lastName: dto.lastName,
         email: dto.email,
         phone: dto.phone,
+        password: dto.password,
+        
+        // Student
+        collegeName: dto.collegeName,
+        courseName: dto.courseName,
+        studyYear: dto.studyYear,
+        
+        // Pro
         organization: dto.organization,
         role: dto.role,
+        experience: dto.experience,
+        domain: dto.domain,
+        
         goals: dto.goals,
       },
+    });
+  }
+
+  async findByEmail(email: string) {
+    return this.prisma.registration.findFirst({
+      where: { email },
+      include: { payment: true }
     });
   }
 }

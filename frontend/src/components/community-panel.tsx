@@ -18,11 +18,14 @@ export function CommunityPanel() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const target = e.target;
     if (target instanceof HTMLInputElement && target.type === "checkbox") {
       setForm((prev) => ({ ...prev, [target.name]: target.checked }));
+    } else if (target.name === "whatsapp") {
+      setForm((prev) => ({ ...prev, [target.name]: target.value.replace(/\D/g, '').slice(0, 10) }));
     } else {
       setForm((prev) => ({ ...prev, [target.name]: target.value }));
     }
@@ -30,15 +33,33 @@ export function CommunityPanel() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
+    // --- VALIDATION ---
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(form.email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    if (form.whatsapp.length !== 10) {
+      setError("WhatsApp number must be exactly 10 digits.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       // 1. Save to Database
-      await fetch(apiUrl(API_ENDPOINTS.community.lead), {
+      const res = await fetch(apiUrl(API_ENDPOINTS.community.lead), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Failed to join community.");
+      }
 
       // 2. WhatsApp redirect with prefilled message
       const message = encodeURIComponent(
@@ -46,10 +67,9 @@ export function CommunityPanel() {
       );
       window.open(`https://wa.me/+916384757116?text=${message}`, "_blank");
       setSubmitted(true);
-    } catch (err) {
+    } catch (err: any) {
+      setError(err.message || "Something went wrong. Please try again.");
       console.error("Failed to save lead:", err);
-      // Still redirect to WhatsApp even if DB fails to not lose the user
-      setSubmitted(true);
     } finally {
       setIsSubmitting(false);
     }
@@ -213,6 +233,12 @@ export function CommunityPanel() {
                         <span className="text-xs text-gray-400 group-hover:text-white transition-colors">Subscribe to the Newsletter</span>
                       </label>
                     </div>
+
+                    {error && (
+                      <div className="p-3 bg-red-500/10 border border-red-500/20 text-red-500 text-[10px] font-bold uppercase tracking-widest text-center">
+                        {error}
+                      </div>
+                    )}
 
                     {/* Submit */}
                     <button

@@ -47,6 +47,7 @@ export const API_ENDPOINTS = {
   registrations: {
     root: '/registrations',
     order: '/registrations/order',
+    byEmail: '/registrations/by-email',
   },
   payments: {
     createOrder: '/payments/create-order',
@@ -54,6 +55,13 @@ export const API_ENDPOINTS = {
   },
   community: {
     lead: '/community/lead',
+  },
+  auth: {
+    sendOtp: '/auth/send-otp',
+    verifyOtp: '/auth/verify-otp',
+    loginOtp: '/auth/login-otp',
+    login: '/auth/login',
+    updatePassword: '/auth/update-password',
   }
 };
 

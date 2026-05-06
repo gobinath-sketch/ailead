@@ -10,4 +10,9 @@ export class RegistrationsController {
   create(@Body() dto: CreateRegistrationDto) {
     return this.registrationsService.create(dto);
   }
+
+  @Post('by-email')
+  getByEmail(@Body() body: { email: string }) {
+    return this.registrationsService.findByEmail(body.email);
+  }
 }

@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { SiteFrame } from "@/components/site-frame";
 import { Marquee } from "@/components/marquee";
+import { FloatingTickets } from "@/components/floating-tickets";
 
 export default function Home() {
   return (
     <SiteFrame title="Global Knowledge Technologies">
-      <div className="flex flex-col gap-8 pt-4 pb-4">
+      <div className="flex flex-col gap-6 pt-2 pb-8">
         
         {/* Cinematic Hero Section */}
         <section className="text-center max-w-4xl mx-auto flex flex-col items-center gap-4 relative">
@@ -24,17 +25,17 @@ export default function Home() {
             Transform from a passive user to an AI operator. Build practical confidence, design unbreakable workflows, and become the undisputed standard in your industry.
           </p>
           
-          <div className="flex flex-wrap justify-center gap-4 mt-6 relative z-10">
-            <Link href="/register" className="cta text-lg px-8 py-4">
+          <div className="flex flex-wrap justify-center gap-4 mt-2 relative z-10">
+            <Link href="/register" className="cta text-lg px-8 py-3">
               Secure Your Access
             </Link>
-            <Link href="/program" className="cta-secondary text-lg px-8 py-4">
+            <Link href="/program" className="cta-secondary text-lg px-8 py-3">
               Explore Program
             </Link>
           </div>
           
           {/* Abstract Stats */}
-          <div className="mt-6 pt-4 border-t border-white/10 flex gap-12 justify-center opacity-80 transition-all duration-500">
+          <div className="mt-4 pt-4 border-t border-white/10 flex gap-12 justify-center opacity-80 transition-all duration-500">
              <div className="text-center">
                <p className="text-4xl font-bold text-white">2+<span className="text-outskill-lime text-2xl relative -top-3">Days</span></p>
                <p className="text-xs uppercase tracking-widest mt-2 text-gray-400">Intensive Training</p>
@@ -50,8 +51,13 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Floating Tickets — click to see event schedule */}
+        <section className="relative z-10 flex justify-center py-0">
+          <FloatingTickets />
+        </section>
+
         {/* Feature Cards - Glassmorphism */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4 relative z-10">
           <article className="glass-panel glass-panel-hover p-6 relative overflow-hidden group">
             <div className="absolute -right-8 -top-8 w-32 h-32 bg-outskill-lime/10 blur-[40px] rounded-none group-hover:bg-outskill-lime/20 transition-all duration-500"></div>
             
@@ -81,8 +87,8 @@ export default function Home() {
         </section>
 
         {/* Global MNC Marquee representing trusted placement / network */}
-        <section className="relative z-10 -mx-4 pb-12 w-[calc(100%+2rem)]">
-           <div className="text-center mb-6">
+        <section className="relative z-10 -mx-4 pb-8 w-[calc(100%+2rem)]">
+           <div className="text-center mb-10">
              <p className="text-sm uppercase tracking-[0.2em] font-semibold text-outskill-lime">Our Network & Alumni Landscape</p>
              <p className="text-gray-400 font-light mt-1 text-sm">Join leaders driving AI innovation across the globe.</p>
            </div>
