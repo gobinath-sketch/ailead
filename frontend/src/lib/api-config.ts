@@ -74,6 +74,7 @@ export const API_ENDPOINTS = {
     events: '/lms/events',
     stats: '/lms/stats/dashboard',
     enroll: '/lms/enroll',
+    links: '/lms/links',
   }
 };
 

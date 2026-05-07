@@ -254,4 +254,27 @@ export class LmsService {
       include: { lesson: true },
     });
   }
+
+  // --- LINKS ---
+  async getLinks() {
+    return this.prisma.resourceLink.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
+  async createLink(data: any) {
+    return this.prisma.resourceLink.create({
+      data: {
+        title: data.title,
+        url: data.url,
+        category: data.category,
+      },
+    });
+  }
+
+  async deleteLink(id: string) {
+    return this.prisma.resourceLink.delete({
+      where: { id },
+    });
+  }
 }

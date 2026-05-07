@@ -101,4 +101,20 @@ export class LmsController {
   async enrollUser(@Body() data: { userId: string; courseId: string }) {
     return this.lmsService.enrollUser(data.userId, data.courseId);
   }
+
+  // LINKS
+  @Get('links')
+  async getLinks() {
+    return this.lmsService.getLinks();
+  }
+
+  @Post('links')
+  async createLink(@Body() data: any) {
+    return this.lmsService.createLink(data);
+  }
+
+  @Delete('links/:id')
+  async deleteLink(@Param('id') id: string) {
+    return this.lmsService.deleteLink(id);
+  }
 }

@@ -60,9 +60,13 @@ export default function AdminRemindersPage() {
   };
 
   const addToGoogleCalendar = (event: any) => {
-    const start = `${event.date.replace(/-/g, "")}T${event.time.replace(":", "")}00`;
-    const end = `${event.date.replace(/-/g, "")}T${(parseInt(event.time.split(":")[0]) + 2).toString().padStart(2, "0")}${event.time.split(":")[1]}00`;
-    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${start}/${end}&details=${encodeURIComponent(event.description)}&location=${encodeURIComponent(event.location)}&sf=true&output=xml`;
+    const formatGoogleDate = (dateString: string) => {
+      const d = new Date(dateString);
+      return d.toISOString().replace(/-|:|\.\d\d\d/g, "");
+    };
+    const start = formatGoogleDate(event.startTime);
+    const end = formatGoogleDate(event.endTime);
+    const url = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&dates=${start}/${end}&details=${encodeURIComponent(event.description || '')}&location=${encodeURIComponent(event.location || '')}&sf=true&output=xml`;
     window.open(url, "_blank");
   };
 

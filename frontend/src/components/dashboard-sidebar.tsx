@@ -22,14 +22,13 @@ const learnerMenuItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
   { icon: Terminal, label: "Prompt Library", href: "/dashboard/prompts" },
   { icon: BookOpen, label: "Courses", href: "/dashboard/courses" },
+  { icon: Award, label: "Practice Lab", href: "/dashboard/practice" },
   { icon: Calendar, label: "Events", href: "/dashboard/events" },
 ];
 
 const adminMenuItems = [
   { icon: LayoutDashboard, label: "Admin Overview", href: "/dashboard" },
-  { icon: Upload, label: "Upload Courses", href: "/dashboard/admin/courses" },
-  { icon: LinkIcon, label: "Links", href: "/dashboard/admin/links" },
-  { icon: FileText, label: "Documents", href: "/dashboard/admin/docs" },
+  { icon: Upload, label: "Content Manager", href: "/dashboard/admin/courses" },
   { icon: Bell, label: "Event Reminders", href: "/dashboard/admin/reminders" },
 ];
 
