@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  LEARNER
+  ADMIN
+}
+
 enum PaymentStatus {
   PENDING
   PAID
@@ -72,9 +77,10 @@ model Registration {
   userType     String   @default("professional") // student or professional
   fullName     String
   lastName     String?
-  email        String
+  email        String   @unique
   phone        String
   password     String?
+  role         Role     @default(LEARNER)
   
   // Student Specific
   collegeName  String?
@@ -83,7 +89,7 @@ model Registration {
   
   // Professional Specific
   organization String?
-  role         String?
+  role_title   String? @map("professional_role") // Avoid conflict with Role enum column
   experience   String?
   domain       String? // e.g. "Data Science", "Marketing"
   
@@ -93,8 +99,110 @@ model Registration {
   updatedAt    DateTime @updatedAt
   payment      Payment  @relation(fields: [paymentId], references: [id], onDelete: Restrict)
 
+  enrollments  Enrollment[]
+  progress     Progress[]
+  notifications Notification[]
+
   @@index([email])
   @@index([phone])
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  thumbnail   String?
+  instructor  String
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  chapters    Chapter[]
+  enrollments Enrollment[]
+}
+
+model Chapter {
+  id        String   @id @default(cuid())
+  courseId  String
+  title     String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons   Lesson[]
+}
+
+model Lesson {
+  id        String   @id @default(cuid())
+  chapterId String
+  title     String
+  type      String   @default("video") // video, pdf, markdown
+  content   String   // URL or Markdown text
+  duration  Int?     // in minutes
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  chapter   Chapter  @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  progress  Progress[]
+}
+
+model Prompt {
+  id          String   @id @default(cuid())
+  title       String
+  category    String   @default("General")
+  content     String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Enrollment {
+  id         String   @id @default(cuid())
+  userId     String
+  courseId   String
+  enrolledAt DateTime @default(now())
+
+  user       Registration @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course     Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+}
+
+model Progress {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonId    String
+  isCompleted Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+
+  user        Registration @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson       @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      Registration @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Event {
+  id            String   @id @default(cuid())
+  title         String
+  description   String?
+  startTime     DateTime
+  endTime       DateTime
+  googleEventId String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model CommunityLead {
