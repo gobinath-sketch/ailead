@@ -7,6 +7,9 @@ import { API_ENDPOINTS, apiUrl } from "../../lib/api-config";
 import { AnimatedTicket } from "../../components/ui/ticket-confirmation-card";
 import { DashboardSidebar } from "../../components/dashboard-sidebar";
 import { DashboardHeader } from "../../components/dashboard-header";
+import { Download } from "lucide-react";
+import * as htmlToImage from "html-to-image";
+
 
 declare global {
   interface Window {
@@ -21,6 +24,9 @@ export default function DashboardPage() {
   const [busy, setBusy] = useState(false);
   const [ticketData, setTicketData] = useState<any>(null);
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [showTicket, setShowTicket] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   useEffect(() => {
     // Load Razorpay Script
@@ -40,6 +46,14 @@ export default function DashboardPage() {
       const parsed = JSON.parse(data);
       setUserData(parsed);
 
+      const checkAndShowTicket = () => {
+        setIsPaid(true);
+        if (!localStorage.getItem("ticketViewed")) {
+          setShowTicket(true);
+          localStorage.setItem("ticketViewed", "true");
+        }
+      };
+
       // Always re-fetch fresh data from server to get latest payment status
       try {
         const res = await fetch(apiUrl(API_ENDPOINTS.registrations.byEmail), {
@@ -53,7 +67,6 @@ export default function DashboardPage() {
             setUserData(freshData);
             localStorage.setItem("registrationData", JSON.stringify(freshData));
             if (freshData.payment?.status === "PAID") {
-              setIsPaid(true);
               // Build ticket from existing payment record
               setTicketData({
                 ticketId: (freshData.payment.razorpayPaymentId || freshData.id || "OFFLINE").slice(-10).toUpperCase(),
@@ -63,19 +76,50 @@ export default function DashboardPage() {
                 last4Digits: "PAID",
                 barcodeValue: freshData.id || Math.floor(Math.random() * 1e12).toString(),
               });
+              checkAndShowTicket();
             }
           }
         }
       } catch {
         // Fallback to localStorage data
         if (parsed.payment?.status === "PAID") {
-          setIsPaid(true);
+          checkAndShowTicket();
         }
       }
     };
 
     initDashboard();
   }, [router]);
+
+  const handleDownloadTicket = async () => {
+    const node = document.getElementById("ticket-capture");
+    if (!node) return;
+    
+    setIsDownloading(true);
+    try {
+      const filter = (node: HTMLElement) => {
+        if (node.classList && node.classList.contains('hide-on-download')) {
+          return false;
+        }
+        return true;
+      };
+      
+      const dataUrl = await htmlToImage.toPng(node, { 
+        quality: 1.0, 
+        pixelRatio: 2,
+        filter: filter as any
+      });
+      const link = document.createElement("a");
+      link.download = `AILeads-Ticket-${ticketData?.ticketId || 'Pass'}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (err) {
+      console.error("Failed to download ticket", err);
+      alert("Failed to download ticket. Please try again.");
+    } finally {
+      setIsDownloading(false);
+    }
+  };
 
   const handlePayment = async () => {
     if (!razorpayLoaded || !userData) {
@@ -175,8 +219,6 @@ export default function DashboardPage() {
     }
   };
 
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [showTicket, setShowTicket] = useState(true);
 
   if (!userData) return null;
 
@@ -235,7 +277,7 @@ export default function DashboardPage() {
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className="relative z-10 w-full max-w-sm"
             >
-              <div className="flex justify-center">
+              <div className="flex justify-center" id="ticket-capture">
                 <AnimatedTicket 
                   ticketId={ticketData.ticketId}
                   amount={ticketData.amount}
@@ -243,15 +285,19 @@ export default function DashboardPage() {
                   cardHolder={ticketData.cardHolder}
                   last4Digits={ticketData.last4Digits}
                   barcodeValue={ticketData.barcodeValue}
+                  onDownload={handleDownloadTicket}
+                  isDownloading={isDownloading}
                 />
               </div>
               
-              <button 
-                onClick={() => setShowTicket(false)}
-                className="mt-12 mx-auto flex items-center gap-2 px-8 py-3 rounded-none bg-white/10 border border-white/20 text-white text-[11px] uppercase font-black tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 shadow-xl"
-              >
-                Back to Dashboard
-              </button>
+              <div className="mt-12 flex justify-center">
+                <button 
+                  onClick={() => setShowTicket(false)}
+                  className="flex items-center justify-center gap-2 px-12 py-4 rounded-none bg-white text-black text-[11px] uppercase font-black tracking-[0.2em] hover:scale-105 transition-all duration-300 shadow-[0_10px_30px_rgba(255,255,255,0.2)]"
+                >
+                  Dashboard
+                </button>
+              </div>
             </motion.div>
           </motion.div>
         )}

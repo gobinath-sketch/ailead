@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../lib/utils";
+import { Download } from "lucide-react";
 
 // --- SVG Icons ---
 
@@ -149,6 +150,8 @@ export interface TicketProps extends React.HTMLAttributes<HTMLDivElement> {
   last4Digits: string;
   barcodeValue: string;
   icon?: React.ReactNode;
+  onDownload?: () => void;
+  isDownloading?: boolean;
 }
 
 const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
@@ -161,6 +164,8 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
       cardHolder,
       last4Digits,
       barcodeValue,
+      onDownload,
+      isDownloading,
       ...props
     },
     ref
@@ -206,6 +211,22 @@ const AnimatedTicket = React.forwardRef<HTMLDivElement, TicketProps>(
           )}
           {...props}
         >
+          {/* Download Button (Hidden during capture) */}
+          {onDownload && (
+            <button
+              onClick={onDownload}
+              disabled={isDownloading}
+              className="hide-on-download absolute top-4 right-4 p-2 bg-white/5 hover:bg-white/10 text-white/40 hover:text-white rounded-none transition-all duration-300"
+              title="Download Ticket"
+            >
+              {isDownloading ? (
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-none animate-spin" />
+              ) : (
+                <Download size={18} />
+              )}
+            </button>
+          )}
+
           {/* Clean Edges (No Notches) */}
 
           <div className="p-8 flex flex-col items-center text-center">
