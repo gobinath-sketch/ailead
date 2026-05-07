@@ -57,6 +57,7 @@ out/
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # LMS Assets (Large Files & Extracted)
 frontend/asset/lms zip/
