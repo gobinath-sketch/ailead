@@ -5,7 +5,7 @@ const links = [
   { href: "/", label: "Home" },
   { href: "/program", label: "Program" },
   { href: "/schedule", label: "Events" },
-  { href: "/mentors", label: "Mentors" },
+  { href: "/mentors", label: "Speakers" },
   { href: "/certificate", label: "Certificate" },
 ];
 
@@ -27,7 +27,7 @@ interface SiteFrameProps {
 }
 
 export function SiteFrame({ title, children }: SiteFrameProps) {
-  const isNoScroll = title === "Global Knowledge Technologies" || title === "Program Details" || title === "Event Schedule" || title === "Your Mentors" || title.includes("Module Explorer");
+  const isNoScroll = title === "Global Knowledge Technologies"  || title === "Program Details" || title === "Event Schedule" || title === "Your Speakers" || title.includes("Module Explorer");
   
   return (
     <div className={`shell relative ${isNoScroll ? 'h-screen overflow-hidden' : ''}`}>

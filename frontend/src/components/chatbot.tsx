@@ -55,7 +55,7 @@ export function Chatbot() {
               <div className="pt-4 border-t border-white/5">
                 <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mb-3">Quick Inquiries</p>
                 <div className="flex flex-col gap-2">
-                  {["About the Program", "Curriculum Details", "Mentor Profiles", "Certification"].map((q) => (
+                  {["About the Program", "Curriculum Details", "Speaker Profiles", "Certification"].map((q) => (
                     <button 
                       key={q}
                       className="text-left px-3 py-2 text-xs text-white bg-white/5 hover:bg-outskill-lime hover:text-black transition-all duration-300 border border-white/5 font-medium"

@@ -21,7 +21,7 @@ const mentors = [
       "Proven ability to lead and inspire global, cross-functional teams to push the boundaries of what's possible.",
       "Creative, strategic thinker with exceptional analytical skills, constantly exploring new ways to harness advanced tech."
     ],
-    image: "/AILeads/mentors/s.webp",
+    image: "/AILeads/mentors/s.jpg",
     linkedin: "https://www.linkedin.com/in/sendhil-kumar-a6aa13122"
   },
   {
@@ -36,7 +36,7 @@ const mentors = [
       "Deeply skilled in EAI, Unix, and complex database management systems.",
       "16+ years experience in technical training and software engineering leadership."
     ],
-    image: "/AILeads/mentors/p.webp",
+    image: "/AILeads/mentors/p.jpg",
     linkedin: "https://www.linkedin.com/in/pmdarius"
   },
   {
@@ -51,7 +51,7 @@ const mentors = [
       "Expert in Deep Learning architectures and LLM fine-tuning",
       "Leads technical R&D for advanced AI implementation frameworks"
     ],
-    image: "/AILeads/mentors/r.webp",
+    image: "/AILeads/mentors/r.jpg",
     linkedin: "https://www.linkedin.com/in/dr-s-radhika-pandiyan-8b263116"
   },
   {
@@ -64,9 +64,9 @@ const mentors = [
       "Shipped 12+ AI-native commercial products", 
       "Specializes in rapid conceptual prototyping and vibe coding",
       "Architect of high-scale enterprise AI product ecosystems",
-      "Mentors startups on technical debt reduction and AI integration"
+      "Advises startups on technical debt reduction and AI integration"
     ],
-    image: "/AILeads/mentors/d.webp",
+    image: "/AILeads/mentors/d.jpg",
     linkedin: "https://www.linkedin.com/in/dineshthan"
   },
 ];
@@ -109,7 +109,7 @@ export default function MentorsPage() {
   };
 
   return (
-    <SiteFrame title="Your Mentors">
+    <SiteFrame title="Your Speakers">
       <div className="w-full h-[calc(100vh-120px)] flex flex-col justify-center relative px-4">
         
         {/* Header - Only visible in grid view */}
@@ -122,7 +122,7 @@ export default function MentorsPage() {
               className="text-center mb-12"
             >
               <p className="inline-block px-3 py-1 rounded-none border border-outskill-lime/30 bg-outskill-lime/10 text-outskill-lime text-xs font-bold tracking-widest uppercase mb-4">
-                Our Mentors
+                Our Speakers
               </p>
               <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight drop-shadow-xl mb-4">
                 Learn from Practitioners.
@@ -157,7 +157,7 @@ export default function MentorsPage() {
                         src={mentor.image} 
                         alt={mentor.name} 
                         fill 
-                        className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000"
+                        className="object-cover brightness-90 group-hover:brightness-100 saturate-[0.8] group-hover:saturate-100 group-hover:scale-110 transition-all duration-1000"
                         sizes="(max-width: 768px) 100vw, 25vw"
                       />
                       

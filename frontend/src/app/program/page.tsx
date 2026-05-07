@@ -72,7 +72,7 @@ const sessions = [
     description: "Celebrate your achievement, recap your learning, and launch your AI journey beyond the workshop with confidence and community.",
     items: [
       "Celebrate completing an intensive, transformative AI education",
-      "Hear from instructors and mentors about next steps and future learning paths",
+      "Hear from instructors and speakers about next steps and future learning paths",
       "Review core frameworks and mental models that will serve you forever",
       "Understand how all sessions connect into a coherent AI mastery arc",
       "Connect with your cohort and continue learning together",
