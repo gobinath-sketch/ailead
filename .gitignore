@@ -65,3 +65,7 @@ frontend/asset/lms zip/*.zip
 frontend/asset/lms zip/learnhouse-dev/
 frontend/asset/lms zip/lms-develop/
 frontend/asset/lms zip/moodle-main/
+
+# Large Media Files
+frontend/asset/videos/
+frontend/public/bg/bg-video.mp4
