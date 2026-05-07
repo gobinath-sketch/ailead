@@ -5,6 +5,7 @@ import { PaymentsModule } from './payments/payments.module';
 import { RegistrationsModule } from './registrations/registrations.module';
 import { CommunityModule } from './community/community.module';
 import { AuthModule } from './auth/auth.module';
+import { LmsModule } from './lms/lms.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AuthModule } from './auth/auth.module';
     RegistrationsModule,
     CommunityModule,
     AuthModule,
+    LmsModule,
   ],
   providers: [PrismaService],
 })
