@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../common/prisma.service';
 
@@ -14,7 +14,8 @@ export class CommunityService {
     });
 
     if (existingLead) {
-      const field = existingLead.email === data.email ? 'Email' : 'WhatsApp number';
+      const field =
+        existingLead.email === data.email ? 'Email' : 'WhatsApp number';
       throw new Error(`${field} is already registered in our community.`);
     }
 

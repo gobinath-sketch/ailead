@@ -19,12 +19,15 @@ export class AuthService {
     });
 
     if (existingRegistration) {
-      const field = existingRegistration.email === email ? 'Email' : 'Phone number';
-      throw new BadRequestException(`${field} is already registered. Please check your dashboard.`);
+      const field =
+        existingRegistration.email === email ? 'Email' : 'Phone number';
+      throw new BadRequestException(
+        `${field} is already registered. Please check your dashboard.`,
+      );
     }
 
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
-    
+
     // Set expiration to 10 minutes from now
     const expiresAt = new Date();
     expiresAt.setMinutes(expiresAt.getMinutes() + 10);
@@ -82,12 +85,14 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new BadRequestException('No registration found for this email. Please register first.');
+      throw new BadRequestException(
+        'No registration found for this email. Please register first.',
+      );
     }
 
     // Generate a 4-digit numeric OTP
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
-    
+
     // Set expiration to 10 minutes from now
     const expiresAt = new Date();
     expiresAt.setMinutes(expiresAt.getMinutes() + 10);
@@ -112,11 +117,15 @@ export class AuthService {
     });
 
     if (!user) {
-      throw new BadRequestException("Looks like you haven't registered yet — secure your access first!");
+      throw new BadRequestException(
+        "Looks like you haven't registered yet — secure your access first!",
+      );
     }
 
     if (user.password !== password) {
-      throw new BadRequestException('Incorrect password. Please try again or use "Forgot?" to reset it.');
+      throw new BadRequestException(
+        'Incorrect password. Please try again or use "Forgot?" to reset it.',
+      );
     }
 
     return { success: true, user };

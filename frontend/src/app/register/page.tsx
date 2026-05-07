@@ -101,12 +101,17 @@ export default function RegisterPage() {
             const regResponse = await fetch(apiUrl(API_ENDPOINTS.registrations.root), {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ ...form, paymentId: verifyResult.paymentId }),
+              body: JSON.stringify({ 
+                ...form, 
+                role_title: form.role, 
+                paymentId: verifyResult.paymentId 
+              }),
             });
             
             const regResult = await regResponse.json();
             if (!regResponse.ok) throw new Error(regResult.message);
             
+            localStorage.setItem("registrationData", JSON.stringify(regResult));
             setEnrolled(true);
           } catch (err) {
             setMessage(err instanceof Error ? err.message : "Error during finalization.");
@@ -151,7 +156,7 @@ export default function RegisterPage() {
                 <div className="p-4 bg-white/5 border border-white/10 text-xs text-gray-400 font-mono mb-8 tracking-widest rounded-none">
                   ENROLLMENT_ID: {paymentId.toUpperCase() || "PENDING"}
                 </div>
-                <Link href="/program" className="bg-[#B8EF43] text-black font-black px-8 py-3 text-sm inline-block uppercase tracking-widest hover:bg-[#c9f95d] rounded-none">Explore Your Journey</Link>
+                <Link href="/dashboard" className="bg-[#B8EF43] text-black font-black px-8 py-3 text-sm inline-block uppercase tracking-widest hover:bg-[#c9f95d] rounded-none">Go to Dashboard →</Link>
               </motion.div>
             ) : (
               <div className="w-full">

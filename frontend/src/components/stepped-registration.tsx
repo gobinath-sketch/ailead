@@ -96,12 +96,8 @@ export function SteppedRegistration({
       });
       if (!res.ok) throw new Error("Invalid OTP");
       
-      // Save form to localStorage for the dashboard
-      localStorage.setItem("registrationData", JSON.stringify({ ...form, userType }));
-      setMessage("Verification successful! Redirecting...");
-      
-      // Redirect to Dashboard
-      window.location.href = "/AILeads/dashboard";
+      setMessage("Verification successful! Opening checkout...");
+      onPay();
     } catch (err) {
       setMessage("Invalid or expired OTP.");
     } finally {

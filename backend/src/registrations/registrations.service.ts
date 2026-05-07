@@ -22,15 +22,20 @@ export class RegistrationsService {
       where: { paymentId: dto.paymentId },
     });
     if (existing) {
-      throw new BadRequestException('This payment is already used for registration.');
+      throw new BadRequestException(
+        'This payment is already used for registration.',
+      );
     }
 
     const duplicateUser = await this.prisma.registration.findFirst({
-      where: { OR: [{ email: dto.email }, { phone: dto.phone }] }
+      where: { OR: [{ email: dto.email }, { phone: dto.phone }] },
     });
     if (duplicateUser) {
-      const field = duplicateUser.email === dto.email ? 'Email' : 'Phone number';
-      throw new BadRequestException(`${field} is already associated with another registration.`);
+      const field =
+        duplicateUser.email === dto.email ? 'Email' : 'Phone number';
+      throw new BadRequestException(
+        `${field} is already associated with another registration.`,
+      );
     }
 
     return this.prisma.registration.create({
@@ -42,18 +47,18 @@ export class RegistrationsService {
         email: dto.email,
         phone: dto.phone,
         password: dto.password,
-        
+
         // Student
         collegeName: dto.collegeName,
         courseName: dto.courseName,
         studyYear: dto.studyYear,
-        
+
         // Pro
         organization: dto.organization,
         role_title: dto.role_title,
         experience: dto.experience,
         domain: dto.domain,
-        
+
         goals: dto.goals,
       },
     });
@@ -62,7 +67,7 @@ export class RegistrationsService {
   async findByEmail(email: string) {
     return this.prisma.registration.findFirst({
       where: { email },
-      include: { payment: true }
+      include: { payment: true },
     });
   }
 
@@ -70,7 +75,7 @@ export class RegistrationsService {
     return this.prisma.notification.findMany({
       where: { userId },
       orderBy: { createdAt: 'desc' },
-      take: 10
+      take: 10,
     });
   }
 }

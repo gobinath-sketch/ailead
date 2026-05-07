@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { LmsService } from './lms.service';
 
 @Controller('lms')
@@ -23,7 +31,10 @@ export class LmsController {
 
   // CHAPTERS
   @Post('courses/:id/chapters')
-  async createChapter(@Param('id') courseId: string, @Body() data: { title: string; order: number }) {
+  async createChapter(
+    @Param('id') courseId: string,
+    @Body() data: { title: string; order: number },
+  ) {
     return this.lmsService.createChapter(courseId, data.title, data.order);
   }
 
@@ -46,8 +57,14 @@ export class LmsController {
 
   // PROGRESS
   @Post('progress')
-  async updateProgress(@Body() data: { userId: string; lessonId: string; isCompleted: boolean }) {
-    return this.lmsService.updateProgress(data.userId, data.lessonId, data.isCompleted);
+  async updateProgress(
+    @Body() data: { userId: string; lessonId: string; isCompleted: boolean },
+  ) {
+    return this.lmsService.updateProgress(
+      data.userId,
+      data.lessonId,
+      data.isCompleted,
+    );
   }
 
   @Get('progress/:userId')
@@ -56,7 +73,10 @@ export class LmsController {
   }
 
   @Get('progress/:userId/course/:courseId')
-  async getCourseProgress(@Param('userId') userId: string, @Param('courseId') courseId: string) {
+  async getCourseProgress(
+    @Param('userId') userId: string,
+    @Param('courseId') courseId: string,
+  ) {
     return this.lmsService.getCourseProgress(userId, courseId);
   }
 

@@ -46,9 +46,11 @@ export class LmsService {
     });
 
     // Logic from Frappe LMS: Notify all users about the new course
-    const users = await this.prisma.registration.findMany({ where: { role: 'LEARNER' } });
+    const users = await this.prisma.registration.findMany({
+      where: { role: 'LEARNER' },
+    });
     await this.prisma.notification.createMany({
-      data: users.map(user => ({
+      data: users.map((user) => ({
         userId: user.id,
         title: 'New Course Available!',
         message: `A new course "${course.title}" has been published by ${course.instructor}.`,
@@ -75,12 +77,12 @@ export class LmsService {
       },
     });
 
-    // AUTO-SYNC LOGIC: 
+    // AUTO-SYNC LOGIC:
     // 1. Create ICS file
     // 2. Email all learners with the invite
     const learners = await this.prisma.registration.findMany({
       where: { role: 'LEARNER' },
-      select: { email: true, fullName: true }
+      select: { email: true, fullName: true },
     });
 
     if (learners.length > 0) {
@@ -91,7 +93,7 @@ export class LmsService {
         summary: data.title,
         description: data.description,
         location: data.location || 'Online',
-        url: 'https://project.globalknowledgetech.com/dashboard/events'
+        url: 'https://project.globalknowledgetech.com/dashboard/events',
       });
 
       const icsContent = calendar.toString();
@@ -129,17 +131,19 @@ export class LmsService {
 
   // --- STATS (Logic from Learnhouse/Frappe) ---
   async getDashboardStats() {
-    const [learnerCount, courseCount, lessonCount, completedLessons] = await Promise.all([
-      this.prisma.registration.count({ where: { role: 'LEARNER' } }),
-      this.prisma.course.count(),
-      this.prisma.lesson.count(),
-      this.prisma.progress.count({ where: { isCompleted: true } }),
-    ]);
+    const [learnerCount, courseCount, lessonCount, completedLessons] =
+      await Promise.all([
+        this.prisma.registration.count({ where: { role: 'LEARNER' } }),
+        this.prisma.course.count(),
+        this.prisma.lesson.count(),
+        this.prisma.progress.count({ where: { isCompleted: true } }),
+      ]);
 
     // Calculate completion rate
-    const completionRate = learnerCount > 0 && lessonCount > 0 
-      ? Math.round((completedLessons / (learnerCount * lessonCount)) * 100) 
-      : 0;
+    const completionRate =
+      learnerCount > 0 && lessonCount > 0
+        ? Math.round((completedLessons / (learnerCount * lessonCount)) * 100)
+        : 0;
 
     return {
       totalLearners: learnerCount,
@@ -156,15 +160,18 @@ export class LmsService {
       where: { isCompleted: true },
       take: 5,
       orderBy: { updatedAt: 'desc' },
-      include: { user: true, lesson: { include: { chapter: { include: { course: true } } } } }
+      include: {
+        user: true,
+        lesson: { include: { chapter: { include: { course: true } } } },
+      },
     });
 
-    return progress.map(p => ({
+    return progress.map((p) => ({
       type: 'COMPLETION',
       user: p.user.fullName,
       item: p.lesson.title,
       course: p.lesson.chapter.course.title,
-      time: p.updatedAt
+      time: p.updatedAt,
     }));
   }
 
@@ -173,18 +180,18 @@ export class LmsService {
     return this.prisma.enrollment.upsert({
       where: { userId_courseId: { userId, courseId } },
       update: {},
-      create: { userId, courseId }
+      create: { userId, courseId },
     });
   }
 
   async getCourseProgress(userId: string, courseId: string) {
     const lessons = await this.prisma.lesson.findMany({
       where: { chapter: { courseId } },
-      select: { id: true }
+      select: { id: true },
     });
 
     const completed = await this.prisma.progress.findMany({
-      where: { userId, isCompleted: true, lesson: { chapter: { courseId } } }
+      where: { userId, isCompleted: true, lesson: { chapter: { courseId } } },
     });
 
     const total = lessons.length;
@@ -244,7 +251,7 @@ export class LmsService {
   async getUserProgress(userId: string) {
     return this.prisma.progress.findMany({
       where: { userId },
-      include: { lesson: true }
+      include: { lesson: true },
     });
   }
 }
