@@ -62,6 +62,18 @@ export const API_ENDPOINTS = {
     loginOtp: '/auth/login-otp',
     login: '/auth/login',
     updatePassword: '/auth/update-password',
+  },
+  lms: {
+    courses: '/lms/courses',
+    chapters: (courseId: string) => `/lms/courses/${courseId}/chapters`,
+    lessons: (chapterId: string) => `/lms/chapters/${chapterId}/lessons`,
+    prompts: '/lms/prompts',
+    progress: '/lms/progress',
+    userProgress: (userId: string) => `/lms/progress/${userId}`,
+    courseProgress: (userId: string, courseId: string) => `/lms/progress/${userId}/course/${courseId}`,
+    events: '/lms/events',
+    stats: '/lms/stats/dashboard',
+    enroll: '/lms/enroll',
   }
 };
 
