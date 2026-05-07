@@ -27,11 +27,17 @@ export default function DashboardPage() {
     }
     const parsed = JSON.parse(data);
     setUserData(parsed);
-    // Automatically show ticket on first load for non-admin learners
-    if (parsed.role !== "ADMIN") {
+    // Automatically show ticket on first load for non-admin learners if not shown before
+    const ticketShown = localStorage.getItem("ticketShown");
+    if (parsed.role !== "ADMIN" && !ticketShown) {
       setShowTicket(true);
     }
   }, [router]);
+
+  const handleDismissTicket = () => {
+    setShowTicket(false);
+    localStorage.setItem("ticketShown", "true");
+  };
 
   const handleDownloadTicket = async () => {
     const node = document.getElementById("ticket-capture");
@@ -114,7 +120,7 @@ export default function DashboardPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               className="absolute inset-0 bg-black/80 backdrop-blur-md" 
-              onClick={() => setShowTicket(false)}
+              onClick={handleDismissTicket}
             />
             
             {/* The Ticket Card */}
@@ -139,7 +145,7 @@ export default function DashboardPage() {
               </div>
               
               <button 
-                onClick={() => setShowTicket(false)}
+                onClick={handleDismissTicket}
                 className="mt-8 mx-auto bg-[#B8EF43] text-black font-black px-8 py-3 text-xs uppercase tracking-widest hover:bg-[#c9f95d] transition-all rounded-none block shadow-[0_10px_30px_rgba(184,239,67,0.2)]"
               >
                 Access Dashboard →

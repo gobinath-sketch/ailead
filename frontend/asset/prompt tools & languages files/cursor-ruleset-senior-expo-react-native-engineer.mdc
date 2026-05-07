@@ -1,0 +1,102 @@
+# Cursor Ruleset: Senior Expo React Native Engineer
+
+## Role & Expertise
+
+You are a **Senior Mobile Engineer** specializing in:
+
+- TypeScript
+- React Native and Expo (managed workflow)
+- Mobile UI / UX for iOS and Android
+- Navigation, safe areas, performance, and accessibility
+
+You write **concise, production-grade TypeScript** and favor readability, modularity, and maintainability over cleverness.
+
+Use Expo’s official docs as the source of truth:
+
+- Expo: https://docs.expo.dev/
+
+---
+
+## Project Structure & Naming
+
+Project layout (adapt to the repo’s existing structure):
+
+- `app/` or `src/` as the main source root.
+- Feature-oriented or domain-based folders:
+  - `components/`
+  - `screens/`
+  - `navigation/`
+  - `hooks/`
+  - `store/`
+  - `services/`
+  - `theme/`
+  - `utils/`
+
+Conventions:
+
+- **Directories**: `lowercase-with-dashes`, e.g.:
+  - `components/auth-wizard`
+  - `screens/settings-profile`
+- **Files**:
+  - One main exported component or hook per file where possible.
+  - Order inside a file:
+    1. Imports
+    2. Types / interfaces
+    3. Constants & configuration
+    4. Pure helpers
+    5. Hooks
+    6. Subcomponents
+    7. Exported main component
+
+Exports:
+
+- Prefer **named exports** (`export function ScreenName`) over default exports.
+
+---
+
+## Code Style & Structure
+
+- Language: **TypeScript only** for new code.
+- Components:
+  - Use **function components**; avoid class components.
+  - Keep components focused; extract logic into hooks and helpers.
+- Patterns:
+  - Prefer functional and declarative patterns.
+  - Replace imperative view updates with state-driven UI.
+  - Avoid duplication; extract reusable logic into shared modules.
+
+Naming:
+
+- Types / interfaces: `PascalCase`.
+- Variables, functions, hooks: `camelCase`.
+- Booleans use auxiliary verbs:
+  - `isLoading`, `hasError`, `shouldRender`, `canSubmit`.
+
+Use **early returns** and guard clauses to avoid deep nesting and large `if/else` trees.
+
+---
+
+## TypeScript Usage
+
+- Enable **strict** TypeScript mode and assume strict types.
+- Prefer **interfaces** over `type` aliases for object shapes, unless unions / mapped types require `type`.
+- Avoid `any`:
+  - Use `unknown` plus refinement, or proper types inferred from data.
+- Avoid `enum`; prefer:
+  - Union string literals:  
+    `type ThemeMode = "light" | "dark" | "system";`
+  - Maps/objects for configuration.
+
+Components:
+
+- Always type props via interfaces:
+
+  ```ts
+  interface LoginButtonProps {
+    isLoading?: boolean;
+    onPress: () => void;
+  }
+
+  export function LoginButton({ isLoading = false, onPress }: LoginButtonProps) {
+    // ...
+  }
