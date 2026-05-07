@@ -56,7 +56,7 @@ export class CreateRegistrationDto {
 
   @IsString()
   @IsOptional()
-  role?: string;
+  role_title?: string;
 
   @IsString()
   @IsOptional()

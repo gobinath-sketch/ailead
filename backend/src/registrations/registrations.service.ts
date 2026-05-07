@@ -50,7 +50,7 @@ export class RegistrationsService {
         
         // Pro
         organization: dto.organization,
-        role: dto.role,
+        role_title: dto.role_title,
         experience: dto.experience,
         domain: dto.domain,
         
@@ -63,6 +63,14 @@ export class RegistrationsService {
     return this.prisma.registration.findFirst({
       where: { email },
       include: { payment: true }
+    });
+  }
+
+  async getNotifications(userId: string) {
+    return this.prisma.notification.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      take: 10
     });
   }
 }
