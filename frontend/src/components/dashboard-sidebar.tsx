@@ -1,25 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   LayoutDashboard, 
   BookOpen, 
   Users, 
   Award, 
-  Settings, 
   ChevronLeft, 
-  ChevronRight 
+  ChevronRight,
+  Terminal,
+  Calendar,
+  Upload,
+  Link as LinkIcon,
+  FileText,
+  Bell
 } from "lucide-react";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
 
-const menuItems = [
+const learnerMenuItems = [
   { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
-  { icon: BookOpen, label: "My Courses", href: "/program" },
-  { icon: Users, label: "Speakers", href: "/mentors" },
-  { icon: Award, label: "Certificate", href: "/certificate" },
-  { icon: Settings, label: "Settings", href: "#" },
+  { icon: Terminal, label: "Prompt Library", href: "/dashboard/prompts" },
+  { icon: BookOpen, label: "Courses", href: "/dashboard/courses" },
+  { icon: Calendar, label: "Events", href: "/dashboard/events" },
+];
+
+const adminMenuItems = [
+  { icon: LayoutDashboard, label: "Admin Overview", href: "/dashboard" },
+  { icon: Upload, label: "Upload Courses", href: "/dashboard/admin/courses" },
+  { icon: LinkIcon, label: "Links", href: "/dashboard/admin/links" },
+  { icon: FileText, label: "Documents", href: "/dashboard/admin/docs" },
+  { icon: Bell, label: "Event Reminders", href: "/dashboard/admin/reminders" },
 ];
 
 interface SidebarProps {
@@ -28,6 +39,23 @@ interface SidebarProps {
 }
 
 export function DashboardSidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
+  const [menuItems, setMenuItems] = useState(learnerMenuItems);
+  const [userRole, setUserRole] = useState("LEARNER");
+  const [userName, setUserName] = useState("My Account");
+
+  useEffect(() => {
+    const data = localStorage.getItem("registrationData");
+    if (data) {
+      const user = JSON.parse(data);
+      if (user.role === "ADMIN") {
+        setMenuItems(adminMenuItems);
+        setUserRole("ADMIN");
+        setUserName(user.fullName || "Gobinath M");
+      } else {
+        setUserName(user.fullName || "My Account");
+      }
+    }
+  }, []);
 
   return (
     <motion.div
@@ -95,8 +123,8 @@ export function DashboardSidebar({ isCollapsed, setIsCollapsed }: SidebarProps) 
               animate={{ opacity: 1 }}
               className="overflow-hidden"
             >
-              <p className="text-white text-[10px] font-black uppercase tracking-widest truncate">My Account</p>
-              <p className="text-white/40 text-[9px] uppercase tracking-widest">Standard User</p>
+              <p className="text-white text-[10px] font-black uppercase tracking-widest truncate">{userName}</p>
+              <p className="text-white/40 text-[9px] uppercase tracking-widest">{userRole === "ADMIN" ? "Administrator" : "Standard User"}</p>
             </motion.div>
           )}
         </div>
